@@ -1,0 +1,4 @@
+Meta-Analysis : background and python pipeline
+https://towardsdatascience.com/meta-analysis-background-and-python-pipeline-bccaf4fde362
+
+https://pypi.org/project/PythonMeta/
