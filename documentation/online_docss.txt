@@ -1,4 +1,11 @@
 Meta-Analysis : background and python pipeline
 https://towardsdatascience.com/meta-analysis-background-and-python-pipeline-bccaf4fde362
 
+Package for stats analysis:
 https://pypi.org/project/PythonMeta/
+
+Package for Google Scholar searching:
+https://pypi.org/project/scholarly/
+
+Searching for PubMEd:
+https://marcobonzanini.com/2015/01/12/searching-pubmed-with-python/
