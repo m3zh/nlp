@@ -16,3 +16,14 @@ https://www.pauloldham.net/api-resources-for-scientific-literature/
 
 
 /****** SPECIFICATIONS *********\
+
+1. Searching databases
+	1. Query with keywords (operators using is possible ?) in Crossref, Google Scholar and PubMed
+	2. Append results into a dataframe with those informations :
+		Title of publication
+		Journal name
+		Authors name
+		Date of publication
+		Abstract
+		Availability of full text (pretty optionnal)
+	3. Remove duplicates
