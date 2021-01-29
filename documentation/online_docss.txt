@@ -10,6 +10,9 @@ https://pypi.org/project/scholarly/
 Searching for PubMed:
 https://marcobonzanini.com/2015/01/12/searching-pubmed-with-python/
 
-More API to retrieve metadata from scientific articles : 
+More API to retrieve metadata from scientific articles :
 (may be more relevant to use somthg like CrossRef than specific API for each database ?)
 https://www.pauloldham.net/api-resources-for-scientific-literature/
+
+
+/****** SPECIFICATIONS *********\
