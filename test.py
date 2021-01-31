@@ -21,7 +21,7 @@ cr = Crossref()
 ## funder, translator, archive, published-print, alternative-id, subject, subtitle, published-online,
 ## publisher-location, content-domain, reference, title, link, type, ##publisher, volume, references-count,
 ## ISBN, issn-type, assertion, deposited, page, content-created, short-container-title, relation, editor
-x= cr.works(query= "cannabis+depression", limit= 100, select= ["title","DOI","author", "abstract", "published-print"])
+x= cr.works(query= "cannabis+depression", limit= 5, select= ["title","DOI","author", "abstract", "published-print"])
 
 ## get full text links, idk the fuck
 ## x = cr.works(filter = {'has_full_text': True})
@@ -32,6 +32,9 @@ x['message'].keys()
 x.type()
 ## print fields selected of articles
 for item in x['message']['items']:
+	print(item)
+## print only the title of first article, work for any fields if exist
+for item in x['message']['items'][0]['title']:
 	print(item)
 ## trying to convert x into dataframe
 print(pd.DataFrame(x['message']['items']))
