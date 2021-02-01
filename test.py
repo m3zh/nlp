@@ -41,12 +41,12 @@ for b in x['message']['items'][0]['title']:
 ## create df for fields
 df= {'title':[], 'DOI':[], 'author':[], 'abstract':[], 'publication date':[]}
 df= pd.DataFrame(data=df)
-## magic
+## convert query results to df
 def xtodf():
 	count= 0
 	while (count < limit):
 		for item in x['message']['items'][count]['title']:
-	#for todf  in item['title']:
 			count = count + 1
-			print(item, count)
+			df.append(item) ## wont work
 xtodf()
+df
