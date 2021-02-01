@@ -1,3 +1,9 @@
+
+Welcome aboard Captain
+
+Overview:
+https://doi.org/10.1186/s41182-019-0165-6
+
 Meta-Analysis : background and python pipeline
 https://towardsdatascience.com/meta-analysis-background-and-python-pipeline-bccaf4fde362
 
@@ -24,8 +30,11 @@ https://harzing.com/resources/publish-or-perish/manual/using/use-cases/general-s
 /******** TECH SPECIFICATIONS *********\
 
 1. Searching databases
-	1. Query with keywords (operators using is possible ?) in Crossref, Google Scholar and PubMed
-	2. Append results into a dataframe with those informations :
+	1. Query with keywords in
+		- Crossref, 
+		- Google Scholar (operators using is possible ?)
+		- PubMed (operators using is possible ?)
+	2. Append each databases results into a dataframe with those informations :
 		Title of publication
 		Journal name
 		Authors name
@@ -34,3 +43,6 @@ https://harzing.com/resources/publish-or-perish/manual/using/use-cases/general-s
 		DOI
 		Availability of full text (pretty optionnal)
 	3. Remove duplicates
+	4. Merge dataframes
+2. Abstract feeding
+3. Title and abstract sreening
