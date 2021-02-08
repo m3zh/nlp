@@ -30,12 +30,12 @@ https://harzing.com/resources/publish-or-perish/manual/using/use-cases/general-s
 
 1. Searching databases
 	1. Query with keywords in
-		- Crossref, 
+		- Crossref,
 		- Google Scholar (operators using is possible ?)
 		- PubMed (operators using is possible ?)
 	2. Append each databases results into a dataframe with those informations :
 		Title of publication
-		Journal name
+		Domain of contribution
 		Authors name
 		Date of publication
 		Abstract
