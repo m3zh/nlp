@@ -8,11 +8,11 @@ pg.Tor_External(tor_sock_port=9050, tor_control_port=9051, tor_password="scholar
 scholarly.use_proxy(pg)
 
 
-#pubs = next(scholarly.search_pubs('Depression in children'))
-queries = next(scholarly.search_keywords(['cannabis','depression']))
-author = next(scholarly.search_author('Judy Garber'))
+pubs = next(scholarly.search_pubs('Depression in children'))
+#queries = next(scholarly.search_keywords(['cannabis','depression']))
+#author = next(scholarly.search_author('Judy Garber'))
 # for query in queries.values():
 # 	scholarly.pprint(query)
 # query = next(scholarly.search_keywords(['depression','cannabis']))
-scholarly.pprint(author)
+scholarly.pprint(pubs)
 print(len(queries))
