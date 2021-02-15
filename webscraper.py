@@ -20,6 +20,7 @@ page = requests.get('https://scholar.google.com/scholar?hl=en&q=', params=payloa
 soup = bs(page.content, "html.parser")
 titles = soup.find_all('h3', class_='gs_rt')
 authors = soup.find_all('div', class_='gs_a')
+abstracts = soup.find_all('div', class_='gs_rs')
 
 titles = clean.my_text(titles)
 authors = clean.my_text(authors)
