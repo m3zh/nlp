@@ -2,6 +2,7 @@ import requests
 import random
 import proxy
 import clean_utilities as clean
+import update_utilities as update
 from bs4 import BeautifulSoup as bs
 import sys
 import pandas as pd
@@ -28,6 +29,8 @@ doi = clean.my_DOI(titles)
 titles = clean.my_text(titles)
 authors = clean.my_author(authors)
 abstracts = clean.my_text(abstracts)
+
+#doi = update.empty_DOI(doi)
 
 data = list(zip(authors, titles, abstracts, years, doi))
 df = pd.DataFrame(data, columns=['Author', 'Title', 'Abstract', 'Year', 'DOI'])
