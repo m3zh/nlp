@@ -9,6 +9,9 @@ https://towardsdatascience.com/meta-analysis-background-and-python-pipeline-bcca
 Package for stats analysis:
 https://pypi.org/project/PythonMeta/
 
+
+
+ ########### DATABASE RETRIEVING RESSOURCES ###########
 Package for Google Scholar searching:
 https://pypi.org/project/scholarly/
 
@@ -24,6 +27,17 @@ https://www.pauloldham.net/api-resources-for-scientific-literature/
 
 Comparative of database engine
 https://harzing.com/resources/publish-or-perish/manual/using/use-cases/general-search
+
+ScienceDirect package :
+https://github.com/ElsevierDev/elsapy
+
+ERIC API:
+https://eric.ed.gov/?api
+
+PsychInfo:
+https://www.apa.org/pubs/psycinfoservices
+############################################
+
 
 
 /******** TECH SPECIFICATIONS *********\
