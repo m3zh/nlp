@@ -22,10 +22,13 @@ titles = soup.find_all('h3', class_='gs_rt')
 authors = soup.find_all('div', class_='gs_a')
 abstracts = soup.find_all('div', class_='gs_rs')
 
+# don't change the order of the cleaning
+years = clean.my_publication_year(authors)
+doi = clean.my_DOI(titles)
 titles = clean.my_text(titles)
-authors = clean.my_text(authors)
+authors = clean.my_author(authors)
 abstracts = clean.my_text(abstracts)
 
-data = list(zip(authors, titles, abstracts))
-df = pd.DataFrame(data, columns=['Author', 'Title', 'Abstract'])
+data = list(zip(authors, titles, abstracts, years, doi))
+df = pd.DataFrame(data, columns=['Author', 'Title', 'Abstract', 'Year', 'DOI'])
 print(df)

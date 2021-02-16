@@ -25,3 +25,7 @@ def get_session(proxies):
     proxy = random.choice(proxies)
     session.proxies = {"http": proxy, "https": proxy}
     return session
+
+def update_session(session, proxies):
+    session.proxies.update(proxies) # choose one random proxy
+    return session
