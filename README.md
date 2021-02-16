@@ -29,10 +29,14 @@ https://harzing.com/resources/publish-or-perish/manual/using/use-cases/general-s
 /******** TECH SPECIFICATIONS *********\
 
 1. Searching databases
-	1. Query with keywords in
-		- Crossref,
-		- Google Scholar (operators using is possible ?)
-		- PubMed (operators using is possible ?)
+	1. Query with keywords in\n
+		- Crossref\n
+		- Google Scholar (operators using is possible ?)\n
+		- PubMed (operators using is possible)\n
+		- ScienceDirect\n
+		- Eric\n
+		- Francis\n
+		- Psychinfo\n
 	2. Append each databases results into a dataframe with those informations :
 		Title of publication
 		Domain of contribution
@@ -42,8 +46,8 @@ https://harzing.com/resources/publish-or-perish/manual/using/use-cases/general-s
 		DOI
 		Availability of full text (pretty optionnal)
 	3. Remove duplicates
-	4. Merge dataframes
+	4. Merge dataframes\n
 
-2. Abstract feeding
+2. Abstract feeding\n
 
 3. Title and abstract sreening
