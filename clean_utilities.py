@@ -1,7 +1,7 @@
 import re
 from bs4 import BeautifulSoup as bs
 
-def my_text(my_list):
+def text(my_list):
 	clean_lst = []
 	clean_rgx = re.compile(r'\[.+\]')
 	for elem in my_list:
@@ -10,7 +10,7 @@ def my_text(my_list):
 		clean_lst.append(obj.strip())
 	return (clean_lst)
 
-def my_author(authors_list):
+def author(authors_list):
 	authors_lst = []
 	clean_rgx = re.compile(r'\s-.+')
 	for elem in authors_list:
@@ -19,7 +19,7 @@ def my_author(authors_list):
 		authors_lst.append(obj.strip())
 	return (authors_lst)
 
-def my_publication_year(authors_list):
+def publication_year(authors_list):
 	year_lst = []
 	extract_rgx = re.compile(r'\d{4}')
 	for elem in authors_list:
@@ -27,7 +27,7 @@ def my_publication_year(authors_list):
 		year_lst.append(''.join(year))
 	return (year_lst)
 
-def my_DOI(titles_list):
+def DOI(titles_list):
 	DOI_lst = []
 	doi_rgx = re.compile(r'.+/doi/abs')
 	for elem in titles_list:
@@ -35,3 +35,15 @@ def my_DOI(titles_list):
 		obj = re.sub(doi_rgx, 'https://doi.org', obj)
 		DOI_lst.append(obj.strip())
 	return (DOI_lst)
+
+def data(html):
+	titles = html.find_all('h3', class_='gs_rt')
+	authors = html.find_all('div', class_='gs_a')
+	abstracts = html.find_all('div', class_='gs_rs')
+	years = publication_year(authors)
+	doi = DOI(titles)
+	titles = text(titles)
+	authors = author(authors)
+	abstracts = text(abstracts)
+	data = list(zip(authors, titles, abstracts, years, doi))
+	return (data)
