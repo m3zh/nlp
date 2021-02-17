@@ -13,6 +13,6 @@ proxies = proxy.get_started()
 #proxy.check_connection(connection)
 
 #enter your search keywords, leaving a space between them, ex.: keyword1 keyword2
-df = search.keywords('cannabis depression', limit=3) #limit -> how many results you want
+df = search.keywords('cannabis depression', limit=30) #limit -> how many results you want
 #doi = update.empty_DOI(doi)
 print(df)

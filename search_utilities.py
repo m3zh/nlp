@@ -9,7 +9,7 @@ def keywords(keywords, limit):
 	tor = TorRequest(password='meta-a')
 	payload = {'q': (keywords).replace(' ', '+') }
 	df = pd.DataFrame()
-	for i in range(0, limit * 10, 10):
+	for i in range(0, limit, 10):
 		page = tor.get('https://scholar.google.com/scholar?start={}&hl=en&as_sdt=0,5&'.format(i), params=payload)
 		print(page)
 		html = bs(page.content, "html.parser")
