@@ -9,10 +9,10 @@ import sys
 import pandas as pd
 
 proxies = proxy.get_started()
-#connection = proxy.get_session(proxies)
-#proxy.check_connection(connection)
+connection = proxy.get_session(proxies)
+proxy.check_connection(connection)
 
 #enter your search keywords, leaving a space between them, ex.: keyword1 keyword2
-df = search.keywords('cannabis depression', limit=30) #limit -> how many results you want
+df = search.keywords('flower africa', limit=100) #limit -> how many results you want
 #doi = update.empty_DOI(doi)
 print(df)
