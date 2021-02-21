@@ -10,7 +10,7 @@ def df_empty_creator():
     return(df)
 
 # Merge filled df from databases searching
-def df_full_merging(*argv):
+def df_full_merging(arg1, *argv):
     for arg in argv:
-        merged_df= arg.append(arg, ignore_index = True)
+        merged_df= arg1.append(arg, ignore_index= True)
     return(merged_df)
