@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 # take an empty DataFrame as argument df
-## take a string as argument keywords
+## take a string as argument keywords, handle operators
 ## feed a DataFrame with results of pubmed database
 ## doesnt work for authors
 def pubmed_df_feeder(df, keywords):
