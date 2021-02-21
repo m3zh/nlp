@@ -19,6 +19,10 @@ df_empty= pandas_utils.df_empty_creator()
 df_crossref= search_db_crossref.crossref_df_feeder(df_empty, search_no_operators)
 
 # Merge DataFrame filled by databases
-## Export merged DataFrame to excel file
 df_full= pandas_utils.df_full_merging(df_crossref, df_pubmed)
+
+#Cleaning the whole set
+df_full = df_full.drop_duplicates(subset=['DOI'], keep='last')
+
+# Export merged DataFrame to excel file
 df_full.to_excel("./excels/df{}{}.xlsx".format(search_no_operators, datetime.now().time()))
