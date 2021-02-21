@@ -8,5 +8,3 @@ def df_empty_creator():
     # add following line directly to db_df_feeder
     # df['publication date']= pd.to_datetime(df['publication date'])
     return(df)
-
-df_empty= df_empty_creator()
