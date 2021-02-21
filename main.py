@@ -8,18 +8,17 @@ search_no_operators= "cannabis+depression"
 # words to research with operators
 search_with_operators= "cannabis AND depression"
 
-#                        DataFrame FEEDERS
+# DataFrame FEEDERS
 # (re)initialising of empty DataFrame
-## Feed it with pubmed results
+## Feed it with PUBMED
 df_empty= pandas_utils.df_empty_creator()
 df_pubmed= search_db_pubmed.pubmed_df_feeder(df_empty, search_with_operators)
-
 # (re)initialising of empty DataFrame
-## Feed it with crossref results
+## Feed it with CROSSREF
 df_empty= pandas_utils.df_empty_creator()
 df_crossref= search_db_crossref.crossref_df_feeder(df_empty, search_no_operators)
 
 # Merge DataFrame filled by databases
 ## Export merged DataFrame to excel file
 df_full= pandas_utils.df_full_merging(df_crossref, df_pubmed)
-df_full.to_excel("./excels/df{}.xlsx".format(search_no_operators))
+df_full.to_excel("./excels/df{}{}.xlsx".format(search_no_operators, datetime.now().time()))
