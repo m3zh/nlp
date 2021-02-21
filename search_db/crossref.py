@@ -44,10 +44,21 @@ def crossref_df_feeder(df, keywords):
         if 'published-print' in fields:
             try:
                 p= res['message']['items'][count]['published-print']['date-parts'][0]
-                str1 = ', '.join(str(p) for p in p)
-                df.at[count, 'publication date'] = str1
+                str1= ', '.join(str(p) for p in p)
+                df.at[count, 'publication date']= str1
+            except KeyError:
+                pass
+        if 'subject' in res['message']['items'][count]:
+            try:
+                df.at[count, 'subject']= res['message']['items'][count]['subject'][0]
+            except KeyError:
+                pass
+        if 'author' in res['message']['items'][count]:
+            try:
+                df.at[count, 'author']= res['message']['items'][count]['author'][0]
             except KeyError:
                 pass
         count= count + 1
+    df.add(df, axis='name of database', fill_value='crossref')
     df['publication date']= pd.to_datetime(df['publication date'])
     return(df)
