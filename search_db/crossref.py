@@ -6,9 +6,9 @@ from habanero import Crossref
 ## take a string as argument keywords, doesnt handle operators
 ## feed a DataFrame with results of pubmed database
 ## doesnt work for authors
-## var limit up to 5000?
+## var limit up to 1000 on 2021-02-21
 def crossref_df_feeder(df, keywords):
-    limit= 5
+    limit= 1000
     cr= Crossref()
     Crossref(mailto= "fool@gmail.com")
 
