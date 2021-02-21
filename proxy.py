@@ -27,20 +27,20 @@ def get_started():
     return proxies
 
 def get_session(proxies):
-    ua = UserAgent(cache=False)
+    #ua = UserAgent(cache=False)
     # construct an HTTP session
     session = requests.Session()
-    session.cookies.set_policy(BlockAll())
-    session.headers = ua.random
+    #session.cookies.set_policy(BlockAll())
+    #session.headers = ua.random
     proxy = next(iter(proxies))
     session.proxies = {"http": proxy, "https": proxy}
     return session
 
 def update_session(proxies):
-    ua = UserAgent(cache=False)
+    #ua = UserAgent(cache=False)
     session = requests.Session()
     session.proxies.update(proxies)
-    session.headers.update(ua)
+    #session.headers.update(ua)
     time.sleep(1)
     return session
 

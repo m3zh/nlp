@@ -31,15 +31,20 @@ def DOI(titles_list):
 	DOI_lst = []
 	doi_rgx = re.compile(r'.+/doi/abs')
 	for elem in titles_list:
-		obj = elem.find('a')['href']
-		obj = re.sub(doi_rgx, 'https://doi.org', obj)
+		try:
+			obj = elem.find('a')['href']
+			obj = re.sub(doi_rgx, 'https://doi.org', obj)
+		except TypeError:
+			obj = ""
+			#print("empty value")
+			pass
 		DOI_lst.append(obj.strip())
 	return (DOI_lst)
 
 def data(html):
-	titles = html.find_all('h3', class_='gs_rt')
-	authors = html.find_all('div', class_='gs_a')
-	abstracts = html.find_all('div', class_='gs_rs')
+	titles = html.find_all('h3', class_="gs_rt")
+	authors = html.find_all(class_='gs_a')
+	abstracts = html.find_all(class_='gs_rs')
 	years = publication_year(authors)
 	doi = DOI(titles)
 	titles = text(titles)
