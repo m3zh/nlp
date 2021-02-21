@@ -47,5 +47,8 @@ def pubmed_df_feeder(df, keywords):
             # except ValueError:
             #     pass
         count= count +1
+    # fill database column
+    df['from_database']= 'pubmed'
+    # apply date time format to publication date column
     df['publication date']= pd.to_datetime(df['publication date'],yearfirst='True')
     return(df)

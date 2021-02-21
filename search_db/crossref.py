@@ -1,10 +1,12 @@
 import pandas as pd
+import numpy as np
 from habanero import Crossref
 
 # take an empty DataFrame as argument dataf
 ## take a string as argument keywords, doesnt handle operators
 ## feed a DataFrame with results of pubmed database
 ## doesnt work for authors
+## var limit up to 5000?
 def crossref_df_feeder(df, keywords):
     limit= 5
     cr= Crossref()
@@ -59,6 +61,8 @@ def crossref_df_feeder(df, keywords):
             except KeyError:
                 pass
         count= count + 1
-    df.add(df, axis='name of database', fill_value='crossref')
+    # fill database column
+    df['from_database']= 'crossref'
+    # apply date time format to publication date column
     df['publication date']= pd.to_datetime(df['publication date'])
     return(df)

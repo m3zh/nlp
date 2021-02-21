@@ -2,7 +2,7 @@ import pandas as pd
 
 # create empty DataFrame
 def df_empty_creator():
-    df= {'title':[], 'publication date':[],'subject':[], 'journal':[], 'DOI':[], 'author':[], 'abstract':[], 'name of database':[]}
+    df= {'title':[], 'publication date':[],'subject':[], 'journal':[], 'DOI':[], 'author':[], 'abstract':[], 'from_database':[]}
     df= pd.DataFrame(data=df)
     df= df.astype(str)
     # add following line directly to db_df_feeder
