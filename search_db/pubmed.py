@@ -1,14 +1,19 @@
 from Bio import Entrez
 import re
+import pandas as pd
 
-def pubmed_df_feeder(df_empty):
+# take an empty DataFrame as argument df
+## take a string as argument keywords
+## feed a DataFrame with results of pubmed database
+## doesnt work for authors
+def pubmed_df_feeder(df, keywords):
     # say hello to NCBI.gov
     Entrez.email= 'monAdresse@mail.com'
     Entrez.tool= 'monScript'
 
     # search in database
     limit= 100
-    handle= Entrez.esearch(db= 'pubmed', term= 'cannabis AND depression factor', retmax= limit)
+    handle= Entrez.esearch(db= 'pubmed', term= keywords, retmax= limit)
     tmp= Entrez.read(handle)
     id_list= tmp['IdList']
     handle= Entrez.efetch(db="pubmed", id=id_list, rettype="medline", retmode="xml")
@@ -42,5 +47,5 @@ def pubmed_df_feeder(df_empty):
             # except ValueError:
             #     pass
         count= count +1
-        df['publication date']= pd.to_datetime(df['publication date'],yearfirst='True')
-        return(df)
+    df['publication date']= pd.to_datetime(df['publication date'],yearfirst='True')
+    return(df)
