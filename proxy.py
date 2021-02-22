@@ -2,8 +2,6 @@ import requests
 import random
 from bs4 import BeautifulSoup as bs
 from itertools import cycle
-from lxml.html import fromstring
-import traceback
 from torrequest import TorRequest
 import time
 from http import cookiejar
@@ -16,15 +14,21 @@ class BlockAll(cookiejar.CookiePolicy):
     rfc2965 = hide_cookie2 = False
 
 def get_started():
-    url = 'https://free-proxy-list.net/'
-    response = requests.get(url)
-    parser = fromstring(response.text)
+    url = "https://free-proxy-list.net/"
+    # get the HTTP response and construct soup object
+    soup = bs(requests.get(url).content, "html.parser")
     proxies = []
-    for i in parser.xpath('//tbody/tr')[:10]:
-        if i.xpath('.//td[7][contains(text(),"yes")]'):
-            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
-            proxies.append(proxy)
+    for row in soup.find("table", attrs={"id": "proxylisttable"}).find_all("tr")[1:]:
+        tds = row.find_all("td")
+        try:
+            ip = tds[0].text.strip()
+            port = tds[1].text.strip()
+            host = f"{ip}:{port}"
+            proxies.append(host)
+        except IndexError:
+            continue
     return proxies
+
 
 def get_session(proxies):
     #ua = UserAgent(cache=False)
@@ -32,16 +36,15 @@ def get_session(proxies):
     session = requests.Session()
     #session.cookies.set_policy(BlockAll())
     #session.headers = ua.random
-    proxy = next(iter(proxies))
+    proxy = random.choice(proxies)
     session.proxies = {"http": proxy, "https": proxy}
     return session
 
-def update_session(proxies):
+def update_session(session, proxies):
     #ua = UserAgent(cache=False)
-    session = requests.Session()
-    session.proxies.update(proxies)
+    proxy = random.choice(proxies)
+    session.proxies = {"http": proxy, "https": proxy}
     #session.headers.update(ua)
-    time.sleep(1)
     return session
 
 def check_connection(connection):
