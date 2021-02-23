@@ -29,13 +29,13 @@ df_crossref.to_csv("./excels/crosref.csv")
 # display(df_elsevier)
 
 # Merge DataFrame filled by databases
-df_full= pandas_utils.df_full_merging(df_crossref, df_pubmed)
+# df_full= pandas_utils.df_full_merging(df_crossref, df_pubmed) not working with big n
+df_test= df_crossref.append(df_pubmed, ignore_index=True)
 
 # Cleaning the whole set
 # df_full= df_full.drop_duplicates(subset=['DOI'], keep='last')
-# df_test= df_crossref.append(df_pubmed, ignore_index=True)
 
-# Export merged DataFrame to excel file
-# df_test.to_csv("./excels/df{}{}.csv".format(search_no_operators, datetime.now().time()))
 
-df_full.to_excel("./excels/dftest3{}{}.xlsx".format(search_no_operators, datetime.now().time()))
+# Export merged DataFrame to files
+df_test.to_csv("./excels/df{}{}.csv".format(search_no_operators, datetime.now().time()))
+# df_test.to_excel("./excels/dftest3{}{}.xlsx".format(search_no_operators, datetime.now().time()))
