@@ -12,7 +12,7 @@ def pubmed_df_feeder(df, keywords):
     Entrez.tool= 'monScript'
 
     # search in database
-    limit= 5000
+    limit= 50
     handle= Entrez.esearch(db= 'pubmed', term= keywords, retmax= limit)
     tmp= Entrez.read(handle)
     id_list= tmp['IdList']

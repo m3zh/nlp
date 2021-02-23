@@ -8,7 +8,7 @@ from habanero import Crossref
 ## doesnt work for authors
 ## var limit up to 1000 on 2021-02-21
 def crossref_df_feeder(df, keywords):
-    limit= 1000
+    limit= 10
     cr= Crossref()
     Crossref(mailto= "fool@gmail.com")
 
