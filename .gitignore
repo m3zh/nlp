@@ -1,6 +1,0 @@
-!.gitignore
-./excels
-./logs
-./data
-./search_db/__pycache__
-./search_db/elsapy
