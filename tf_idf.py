@@ -14,8 +14,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 def text2Vector(texts):
 	print("Vectorizing ...")
 	tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer, stop_words='english')
-	print(tfidf_vectorizer)
-	print("done till here")
 	vectors = tfidf_vectorizer.fit_transform(texts)
 	return (vectors)
 
