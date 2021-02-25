@@ -6,7 +6,8 @@ from nltk.stem.porter import *
 from collections import Counter
 
 def remove_punctuation(original):
-	new = re.sub('['+string.punctuation+']', '', original)
+	# remove punctuation and numbers
+	new = re.sub('['+string.punctuation+'|\d+?]', '', original)
 	return (new)
 
 def remove_stopwords(original):
@@ -15,9 +16,9 @@ def remove_stopwords(original):
 	# add nan to remove NaN
 	sw_list = set(stopwords.words('english'))
 	sw_list.add('nan')
-	#use applymap for df, apply for Series
+	# use applymap for df, apply for Series
 	new = original.applymap(lambda col: remove_punctuation(str(col).lower()))
-	#new = new.applymap(lambda col: ' '.join([w for w in col.split() if w not in sw_list])) #return a joined string
+	# remove stopwords
 	new = new.applymap(lambda col: ' '.join([w for w in col.split() if w not in sw_list]))
 	return (new)
 

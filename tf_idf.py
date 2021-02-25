@@ -14,7 +14,8 @@ import numpy as np
 
 def text2Vector(texts):
 	print("Vectorizing ...")
-	tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer, stop_words='english')
+	# in tokenizer, you can use either stemTokenizer or lemmaTokenizer
+	tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer) # , stop_words='english') <- we can omit this parameter, as we remove stopwords upfront
 	vectors = tfidf_vectorizer.fit_transform(texts)
 	return (vectors)
 
@@ -30,5 +31,5 @@ def similarity_matrix(texts):
 def get_scores(rows, values):
 	scaler = MinMaxScaler(feature_range=(0, 1))
 	scores = [np.sum(v) for v in values]
-	scores = np.array(scores).reshape(rows, -1)
-	return scaler.fit_transform(scores)
+	scores = np.array(scores).reshape(rows, -1) # to fit the df shape
+	return scaler.fit_transform(scores) # normalize 0, 1
