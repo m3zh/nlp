@@ -13,8 +13,10 @@ search_with_operators= "gifted children behavior problems" #OPERATORS doesnt wor
 # DataFrame FEEDERS
 ## Feed it with PUBMED
 df_pubmed= search_db_pubmed.pubmed_df_feeder(search_with_operators)
+print("✓ Pubmed")
 ## Feed it with CROSSREF
 df_crossref= search_db_crossref.crossref_df_feeder(search_no_operators)
+print("✓ Crossref")
 
 ##### TESTING
 # (re)initialising of empty DataFrame
@@ -31,6 +33,7 @@ print("Number of results before cleaning :", len(df_full))
 
 # Cleaning the whole set
 df_clean= df_full.drop_duplicates(subset=['DOI'], keep='last')
+df_clean.reset_index(drop=True, inplace=True)
 ## Print lenght of index (number of rows)
 print("Number of results after cleaning :", len(df_clean))
 
