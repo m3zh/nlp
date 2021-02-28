@@ -39,3 +39,4 @@ print("Number of results after cleaning :", len(df_clean))
 
 # Export merged DataFrame to files
 df_clean.to_csv("./excels/df{}{}.csv".format(search_no_operators, datetime.now().time()))
+print("Results exported to .csv in ./excels/")
