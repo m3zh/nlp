@@ -1,14 +1,20 @@
 import pandas as pd
 import numpy as np
 from habanero import Crossref
+import sys # needed for import pandas_utils from parent folder
+sys.path.append("/..") # needed for import pandas_utils from parent folder
+import pandas_utils
 
 # take an empty DataFrame as argument dataf
 ## take a string as argument keywords, doesnt handle operators
 ## feed a DataFrame with results of pubmed database
 ## doesnt work for authors
 ## var limit up to 1000 on 2021-02-21
-def crossref_df_feeder(df, keywords):
-    limit= 10
+def crossref_df_feeder(keywords):
+    # # create empty df
+    df= pandas_utils.df_empty_creator()
+
+    limit= 1000
     cr= Crossref()
     Crossref(mailto= "fool@gmail.com")
 
