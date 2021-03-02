@@ -11,7 +11,7 @@ def remove_punctuation(original):
 	return (new)
 
 def remove_stopwords(original):
-	print("Removing stopwords...")
+	print("Removing stopwords ...")
 	# you need to download the corpus on your machine -> python3 -m nltk.downloader stopwords
 	# add nan to remove NaN
 	sw_list = set(stopwords.words('english'))

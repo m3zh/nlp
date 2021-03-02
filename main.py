@@ -13,17 +13,19 @@ dataset = nlp.remove_stopwords(dataset)
 # change dataset['text'] into a simple list
 texts = dataset['text'].tolist()
 # change texts into vectors of topics
-scores = model.topic_matrix(texts)
+tmodel, scores = model.topic_matrix(texts)
 # add a new column with the found topic for each subject
 df['topics'] = scores.argmax(axis=1)
-# get first two topics
-#scores = model.filter_topics(len(df),vectors)
-# add scores column to original df and sort
-
-#df = df.sort_values(by=['topics'], ascending=False)
-
+# filter topics according to keywords
+keywords = ['children','disorder']
+topics = model.filter_topics(tmodel, keywords)
+# filter df by topic
+mask = df['topics'].isin(topics)
+df = df[mask]
+df.to_csv('df.csv',index=False)
 # add test and train
 # drop topics not fitted
 
 #pd.set_option('display.max_colwidth', None)
+# print(topics)
 print(df)
