@@ -2,7 +2,6 @@ from datetime import datetime
 import pandas_utils
 import search_db.pubmed as search_db_pubmed
 import search_db.crossref as search_db_crossref
-import search_db.elsapy.elsevier as search_db_elsevier
 import search_db.pyscopus as search_db_scopus
 
 # words to research without operators
@@ -17,17 +16,12 @@ print("✓ Pubmed")
 ## Feed it with CROSSREF
 df_crossref= search_db_crossref.crossref_df_feeder(search_no_operators)
 print("✓ Crossref")
-
-##### TESTING
-# (re)initialising of empty DataFrame
 ## Feed it with ELSEVIER
-# df_elsevier= search_db_elsevier.elsevier_df_feeder(df_empty, search_no_operators)
-# df_empty= pandas_utils.df_empty_creator()
-# df_elsevier = search_db_scopus.scopus_df_feeder(df_empty, search_no_operators)
-# display(df_elsevier)
+df_elsevier = search_db_scopus.scopus_df_feeder(search_no_operators)
+print("✓ Scopus")
 
 # Merge DataFrame filled by databases
-df_full= pandas_utils.df_full_merging(df_crossref, df_pubmed)
+df_full= pandas_utils.df_full_merging(df_crossref, df_pubmed, df_elsevier)
 ## Print lenght of index (number of rows)
 print("Number of results before cleaning :", len(df_full))
 
