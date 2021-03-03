@@ -16,6 +16,8 @@ def remove_stopwords(original):
 	# add nan to remove NaN
 	sw_list = set(stopwords.words('english'))
 	sw_list.add('nan')
+	# add academic-specific words, e.g. analysis
+	sw_list.update(['analysis','study','review','investigate','paper','research','model'])
 	# use applymap for df, apply for Series
 	new = original.applymap(lambda col: remove_punctuation(str(col).lower()))
 	# remove stopwords

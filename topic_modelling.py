@@ -16,7 +16,7 @@ import pickle
 def text2Vector(texts):
 	print("Vectorizing ...")
 	# in tokenizer, you can use either stemTokenizer or lemmaTokenizer
-	vectorizer = CountVectorizer(tokenizer=nlp.stemTokenizer, max_df=0.9, min_df=25, token_pattern='\w+|\$[\d\.]+|\S+')
+	vectorizer = CountVectorizer(tokenizer=nlp.lemmaTokenizer, max_df=0.9, min_df=25, token_pattern='\w+|\$[\d\.]+|\S+')
 	#vectorizer = CountVectorizer() # , stop_words='english') <- we can omit this parameter, as we remove stopwords upfront
 	vectors = vectorizer.fit_transform(texts).toarray()
 	pickle.dump(vectorizer, open("vectorizer.pickle", "wb"))
@@ -43,11 +43,19 @@ def topic_matrix(texts):
 	return (tmodel, scores)
 
 def filter_topics(tmodel, keywords):
+    keywords = nlp.get_lemmas(keywords)
+    print(keywords)
     vectorizer = pickle.load(open("vectorizer.pickle", 'rb'))
     topics = []
     for i, topic in enumerate(tmodel.components_):
-	    words = [vectorizer.get_feature_names()[i] for i in topic.argsort()[-18:]]
+	    words = [vectorizer.get_feature_names()[i] for i in topic.argsort()[10:]]
+	    print(i)
+	    print(words)
+	    limit = 0
 	    for word in keywords:
 		    if re.search(word, ' '.join(words)):
+			#     limit += 1
+		    # if limit > 1:
 			    topics.append(i)
-    return topics
+    print(set(topics))
+    return set(topics)
