@@ -19,13 +19,17 @@ def author(authors_list):
 		authors_lst.append(obj.strip())
 	return (authors_lst)
 
-def publication_year(authors_list):
+def journal_and_publication_year(authors_list):
 	year_lst = []
-	extract_rgx = re.compile(r'\d{4}')
+	journal_lst = []
+	year_rgx = re.compile(r'\d{4}')
+	journal_rgx = re.compile(r'-\s(.*),\s')
 	for elem in authors_list:
-		year = re.findall(extract_rgx, elem.get_text())
+		year = re.findall(year_rgx, elem.get_text())
+		journal = re.findall(journal_rgx, elem.get_text())
 		year_lst.append(''.join(year))
-	return (year_lst)
+		journal_lst.append(''.join(journal))
+	return (journal_lst, year_lst)
 
 # apply to each doi of a df column
 def single_DOI(doi):
@@ -52,10 +56,10 @@ def data(html):
 	titles = html.find_all('h3', class_="gs_rt")
 	authors = html.find_all(class_='gs_a')
 	abstracts = html.find_all(class_='gs_rs')
-	years = publication_year(authors)
+	journals, years = journal_and_publication_year(authors)
 	doi = DOI_list(titles)
 	titles = text(titles)
 	authors = author(authors)
 	abstracts = text(abstracts)
-	data = list(zip(authors, titles, abstracts, years, doi))
+	data = list(zip(titles, years, journals, doi, authors, abstracts))
 	return (data)

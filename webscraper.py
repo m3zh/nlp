@@ -13,7 +13,8 @@ data = s.requests_search('africa flowers', proxies, connection, limit=50) #limit
 #doi = update.empty_DOI(doi)
 
 
-df = s.create_df(data)
+df = s.create_gs_df(data)
 df.to_csv('df.csv', sep=',')
 df.to_excel('df.xlsx')
+#pd.set_option('display.max_colwidth', None)
 print(df)
