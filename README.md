@@ -3,7 +3,8 @@
 The first time you run the script, make sure to install the following in your terminal:
 
 `python3 -m nltk.downloader stopwords`  
-`python3 -m nltk.downloader punkt`  
+`python3 -m nltk.downloader punkt`
+`python3 -m nltk.downloader wordnet`  
 
 or to download everything at once:  
 
