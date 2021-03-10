@@ -2,6 +2,7 @@ import re, nltk
 import pandas as pd
 import string
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet
 from nltk.stem.porter import *
 from collections import Counter
 
@@ -16,13 +17,35 @@ def remove_stopwords(original):
 	# add nan to remove NaN
 	sw_list = set(stopwords.words('english'))
 	sw_list.add('nan')
-	# add academic-specific words, e.g. analysis
-	sw_list.update(['analysis','study','review','investigate','paper','research','model'])
 	# use applymap for df, apply for Series
 	new = original.applymap(lambda col: remove_punctuation(str(col).lower()))
 	# remove stopwords
 	new = new.applymap(lambda col: ' '.join([w for w in col.split() if w not in sw_list]))
 	return (new)
+
+def remove_academic_words(original):
+	print("Removing academic words ...")
+	aw_words = ['analysis','study','review','investigate','investigation','paper','research','model','experiment','experimental','mechanism','application' \
+				'method', 'role', 'behavior', 'behaviour', 'mechanism']
+	aw_list = []
+	# add academic-specific words, e.g. analysis
+	for w in aw_words:
+		for syn in wordnet.synsets(w):
+			for l in syn.lemmas():
+				aw_list.append(l.name())
+	aw_list = set(aw_list)
+	print(aw_list)
+	# use applymap for df, apply for Series
+	new = original.applymap(lambda col: ' '.join([w for w in col.split() if w not in aw_list]))
+	return (new)
+
+def get_synonyms(words):
+	syn_list = []
+	for w in words:
+		for syn in wordnet.synsets(w):
+			for l in syn.lemmas():
+				syn_list.append(l.name())
+	return (set(syn_list))
 
 # stem take only one token for words with different forms,
 # e.g. give, gave, given -> stem: give
