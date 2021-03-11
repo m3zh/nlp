@@ -14,7 +14,7 @@ def crossref_df_feeder(keywords):
     # # create empty df
     df= pandas_utils.df_empty_creator()
 
-    limit= 1000
+    limit= 1 #limit tested = 1000
     cr= Crossref()
     Crossref(mailto= "fool@gmail.com")
 

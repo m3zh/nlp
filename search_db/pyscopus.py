@@ -1,16 +1,21 @@
 from pyscopus import Scopus
 import pandas as pd
-import sys # needed for import pandas_utils from parent folder
+# needed to import from current folder
+import os
+import sys
+file_dir = os.path.dirname(__file__)
+sys.path.append(file_dir)
 sys.path.append("/..") # needed for import pandas_utils from parent folder
 import pandas_utils
+sys.path.append(".")
+from apikeys import scopus_key
 
 def scopus_df_feeder(keywords):
     df= pandas_utils.df_empty_creator() # create empty df
 
 # say Hello to Scopus
-    limit= 2000 # max tested = 2000
-    apikey = '095547760e767f8b5fdbe548a92316a7' # API KEY
-    scopus = Scopus(apikey) #
+    limit= 2 # max tested = 2000
+    scopus = Scopus(scopus_key)
 
     search_df = scopus.search("KEY(keywords)", count=limit, view='STANDARD')
 

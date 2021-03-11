@@ -5,8 +5,7 @@ import sys # needed for import pandas_utils from parent folder
 sys.path.append("/..") # needed for import pandas_utils from parent folder
 import pandas_utils
 
-# take an empty DataFrame as argument df
-## take a string as argument keywords, handle operators
+# take a string as argument keywords, handle operators
 ## feed a DataFrame with results of pubmed database
 ## doesnt work for authors
 def pubmed_df_feeder(keywords):
@@ -18,7 +17,7 @@ def pubmed_df_feeder(keywords):
     Entrez.tool= 'monScript'
 
     # search in database
-    limit= 5000
+    limit= 5 #max tested = 6000
     handle= Entrez.esearch(db= 'pubmed', term= keywords, retmax= limit)
     tmp= Entrez.read(handle)
     id_list= tmp['IdList']
