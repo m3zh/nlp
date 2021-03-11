@@ -11,12 +11,13 @@ import pandas_utils
 def gs_df_feeder(keywords):
 
     #df= pandas_utils.df_empty_creator()
+    
     # change code to retrieve less than 10 results
     limit= 3 #limit max 3000
     browser = selen.get_browser()
     data = s.selenium_search(keywords, browser, limit=limit)
     df = s.create_gs_df(data)
-    
+
     # fill database column
     df['from_database']= 'google_scholar'
     # apply date time format to publication date column
