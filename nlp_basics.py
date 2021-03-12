@@ -39,3 +39,8 @@ def get_lemmas(tokens): # in terminal python3 -m nltk.downloader wordnet
 
 def lemmaTokenizer(text):
     return get_lemmas(nltk.word_tokenize(text.lower()))
+
+def check_df(df):
+    keywords = ['engineering','cultural','forensic','natural','computer','technology','computing','environmental','information']
+    df = df[~df['journal'].astype(str).str.contains('|'.join(keywords),case=False)]
+    return df
