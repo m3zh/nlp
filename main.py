@@ -22,5 +22,6 @@ df['tfidf_score'] = scores
 df = df.sort_values(by=['tfidf_score'], ascending=False)
 df = df[~(df['tfidf_score'] < 0.289)]
 df.to_csv("results.csv")
+df.to_excel("results.xlsx")
 #pd.set_option('display.max_colwidth', None)
 print(df)
