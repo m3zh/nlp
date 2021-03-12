@@ -4,7 +4,12 @@ The first time you run the script, make sure to install the following in your te
 
 `python3 -m nltk.downloader stopwords`  
 `python3 -m nltk.downloader punkt`  
-`python3 -m nltk.downloader wordnet` 
+`python3 -m nltk.downloader wordnet`
+
+## How To
+
+Run `python3 main.py`  
+see your results sorted by relevance in results.csv
 
 ## WARNINGS
 
