@@ -1,13 +1,17 @@
 import requests
-import clean_utilities as clean
-import update_utilities as update
 from bs4 import BeautifulSoup as bs
 import pandas as pd
 import time
 import random
+import os
 import sys # needed for import pandas_utils from parent folder
 sys.path.append("/...") # needed for import pandas_utils from parent folder
 import pandas_utils
+file_dir = os.path.dirname(__file__)
+sys.path.append(file_dir)
+import clean_utilities as clean
+import selenium_utils
+import search_utilities as s
 
 def selenium_search(keywords, browser, limit):
 	payload = (keywords).replace(' ', '+') # change parameters keyword in url form
@@ -29,3 +33,17 @@ def create_gs_df(data):
 	for d in data:
 		df = pd.concat([df, d], ignore_index=True)
 	return (df)
+
+# main function, call above and return full df
+def gs_df_feeder(keywords):
+    # change code to retrieve less than 10 results
+    limit= 10 #limit max 3000
+    browser = selenium_utils.get_browser()
+    data = s.selenium_search(keywords, browser, limit=limit)
+    df = s.create_gs_df(data)
+
+    # fill database column
+    df['from_database']= 'google_scholar'
+    # apply date time format to publication date column
+    df['publication date']= pd.to_datetime(df['publication date'],yearfirst='True')
+    return(df)

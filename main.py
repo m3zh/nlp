@@ -3,7 +3,7 @@ import pandas_utils
 import search_db.pubmed as search_db_pubmed
 import search_db.crossref as search_db_crossref
 import search_db.pyscopus as search_db_scopus
-import search_db.google_scholar.seleniumscraper as search_db_gs
+import search_db.google_scholar.search_utilities as search_db_gs
 
 # words to research without operators
 search_no_operators= "gifted+children+behavior+problems"
