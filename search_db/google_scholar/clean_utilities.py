@@ -1,6 +1,9 @@
 import re
 from bs4 import BeautifulSoup as bs
 
+# clean results of google scholar
+## provide only text without weirds characters from html syntax
+
 def text(my_list):
 	clean_lst = []
 	clean_rgx = re.compile(r'\[.+\]')
