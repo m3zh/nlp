@@ -34,32 +34,23 @@ def journal_and_publication_year(authors_list):
 		journal_lst.append(''.join(journal))
 	return (journal_lst, year_lst)
 
-# apply to each doi of a df column
-def single_DOI(doi):
-	doi_rgx = re.compile(r".*?(10\..*\d+)(.*)?") # find all and keep DOI
-	doi = re.sub(doi_rgx, r"\1", doi)
-	return (doi)
-
 # this function is specific for gs
 def DOI_list(titles_list):
 	DOI_lst = []
-	doi_rgx = re.compile(r'.+/doi/abs')
+	doi_rgx = re.compile(r'.*?(10\..*\d+)(.*)?')
 	for elem in titles_list:
 		try:
 			obj = elem.find('a')['href']
-			obj = re.sub(doi_rgx, 'https://doi.org', obj) # --> add https.//doi.org to turn doi into link
+			obj = re.sub(doi_rgx, r"\1", obj) # --> add https.//doi.org to turn doi into link
 		except TypeError:
 			obj = ""
-			#print("empty value")
 			pass
 		DOI_lst.append(obj.strip())
 	return (DOI_lst)
 
 def data(html):
 	titles = html.find_all('h3', class_="gs_rt")
-	# print(titles)
 	authors = html.find_all(class_='gs_a')
-	# print(authors)
 	abstracts = html.find_all(class_='gs_rs')
 	journals, years = journal_and_publication_year(authors)
 	doi = DOI_list(titles)
