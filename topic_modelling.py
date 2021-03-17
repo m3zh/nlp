@@ -43,7 +43,7 @@ def LDA_model(vectors):
 def topic_matrix(texts):
     vectors = text2Vector(texts)
     # LDA or NMF model
-    tmodel, scores = NMF_model(vectors)
+    tmodel, scores = LDA_model(vectors)
     return (tmodel, scores)
 
 # keeps only topic with relevant keywords
@@ -60,7 +60,7 @@ def filter_topics(tmodel, keywords):
                 topics.append(i)
     return set(topics)
 
-# def check_df(df):
-#     keywords = ['engineering','cultural','forensic','natural']
-#     df = df[~df['subject'].astype(str).str.contains('|'.join(keywords),case=False)]
-#     return df
+def check_df(df):
+    keywords = ['engineering','cultural','forensic','natural']
+    df = df[~df['subject'].astype(str).str.contains('|'.join(keywords),case=False)]
+    return df

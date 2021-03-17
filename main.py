@@ -4,10 +4,10 @@ import topic_modelling as model  # term frequency vectorizer
 import numpy as np
 from openpyxl.workbook import Workbook
 
-df = pd.read_csv('data.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
+df = pd.read_csv('complete.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
 df.drop_duplicates(inplace=True)
 # drop unrelated subjects
-# df = model.check_df(df)
+df = model.check_df(df)
 # change title+abstract into a unique column of text
 dataset = df.filter(['title','abstract'], axis=1)
 dataset['text'] = df['title'].str.cat(df[['abstract']].astype(str), sep=" ")
