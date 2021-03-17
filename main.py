@@ -14,7 +14,7 @@ df = ds.check_df(df) # to change after we add abstracts
 dataset = df.filter(['title','abstract'], axis=1)
 dataset['text'] = df['title'].str.cat(df[['abstract']].astype(str), sep=" ")
 # remove stopwords and Nan values
-dataset = nlp.remove_stopwords(dataset)
+dataset = nlp.normalize(dataset)
 # change dataset['text'] into a simple list of texts
 texts = dataset['text'].tolist()
 # texts are feed to the model and turned into vectors of words
@@ -29,7 +29,7 @@ df['tfidf_score'] = scores
 df = ds.sort_df(df)
 # save the data in csv and xlsl
 df.to_csv("results.csv")
-df.drop('tfidf_score',axis=1,inplace=True) # we don't need to give the score to the client in excel
+df.drop('tfidf_score',axis=1) # we don't need to give the score to the client in excel
 df.to_excel("results.xlsx")
 # to display full-width column in df in terminal
 # pd.set_option('display.max_colwidth', None)
