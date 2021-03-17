@@ -10,9 +10,8 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import pickle
 
-# LDA is better for long text and more precise in general
-# NMF is better for shorter texts (such as tweets, titles) but less precise
-
+# transform texts into vectors
+# dump the vectorizer in the file vectorizer.pickle
 def text2Vector(texts):
     print("Vectorizing ...")
     # in tokenizer, you can use either stemTokenizer or lemmaTokenizer
@@ -22,6 +21,8 @@ def text2Vector(texts):
     pickle.dump(vectorizer, open("vectorizer.pickle", "wb"))
     return (vectors)
 
+# NMF is better for shorter texts (such as tweets, titles) but less precise
+# model used to extract topics
 def NMF_model(vectors):
     print("NMF modelling ...")
     topics = 10
@@ -29,6 +30,8 @@ def NMF_model(vectors):
     scores = tmodel.fit_transform(vectors)
     return tmodel, scores
 
+# LDA is better for long text and more precise in general
+# model used to extract topics
 def LDA_model(vectors):
     print("LDA modelling ...")
     topics = 10
@@ -36,38 +39,28 @@ def LDA_model(vectors):
     scores = tmodel.fit_transform(vectors)
     return tmodel, scores
 
+# extract topic and assign one to each article
 def topic_matrix(texts):
     vectors = text2Vector(texts)
-    # LDA or NMP model
+    # LDA or NMF model
     tmodel, scores = NMF_model(vectors)
     return (tmodel, scores)
 
+# keeps only topic with relevant keywords
 def filter_topics(tmodel, keywords):
     keywords = nlp.get_lemmas(nlp.get_synonyms(keywords))
     vectorizer = pickle.load(open("vectorizer.pickle", 'rb'))
     topics = []
     for i, topic in enumerate(tmodel.components_):
         words = [vectorizer.get_feature_names()[i] for i in topic.argsort()[-5:]]
-        print(i)
-        print(words)
+        # print(i)
+        # print(words)
         for word in keywords:
             if re.search(word, ' '.join(words)):
                 topics.append(i)
     return set(topics)
 
-# def check_df(df, keywords):
-#     keywords = set(nlp.get_lemmas(nlp.get_synonyms(keywords)))
-#     print(keywords)
-#     for index, row in df.iterrows():
-#         count = 0
-#         for word in row['title'].split():
-#             if word in keywords:
-#                 count += 1
-#         if count == 0:
-#             df.drop(index, inplace=True)
+# def check_df(df):
+#     keywords = ['engineering','cultural','forensic','natural']
+#     df = df[~df['subject'].astype(str).str.contains('|'.join(keywords),case=False)]
 #     return df
-
-def check_df(df):
-    keywords = ['engineering','cultural','forensic','natural']
-    df = df[~df['subject'].astype(str).str.contains('|'.join(keywords),case=False)]
-    return df
