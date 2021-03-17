@@ -24,8 +24,6 @@ def remove_stopwords(original):
 
 # stem take only one token for words with different forms,
 # e.g. give, gave, given -> stem: give
-# note to self : lemmatisation when we'll have more abstracts?
-
 def get_stems(texts): # in terminal python3 -m nltk.downloader punkt
 	stemmer = nltk.stem.porter.PorterStemmer()
 	return [stemmer.stem(token) for token in texts]
@@ -33,14 +31,11 @@ def get_stems(texts): # in terminal python3 -m nltk.downloader punkt
 def stemTokenizer(text):
     return get_stems(nltk.word_tokenize(text.lower()))
 
+# lemma take only one token for words with different forms,
+# e.g. give, gave, given -> lemma: give
 def get_lemmas(tokens): # in terminal python3 -m nltk.downloader wordnet
     lemmer = nltk.stem.WordNetLemmatizer()
     return [lemmer.lemmatize(token) for token in tokens]
 
 def lemmaTokenizer(text):
     return get_lemmas(nltk.word_tokenize(text.lower()))
-
-def check_df(df):
-    keywords = ['engineering','cultural','forensic','natural','computer','technology','computing','environmental','information']
-    df = df[~df['journal'].astype(str).str.contains('|'.join(keywords),case=False)]
-    return df
