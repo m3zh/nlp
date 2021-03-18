@@ -47,7 +47,6 @@ def remove_academic_words(original):
 			for l in syn.lemmas():
 				aw_list.append(l.name())
 	aw_list = set(aw_list)
-	print(aw_list)
 	# use applymap for df, apply for Series
 	new = original.applymap(lambda col: ' '.join([w for w in col.split() if w not in aw_list]))
 	return (new)
@@ -62,15 +61,15 @@ def get_synonyms(words):
 
 # stem take only one token for words with different forms,
 # e.g. give, gave, given -> stem: give
-# note to self : lemmatisation when we'll have more abstracts?
-
 def get_stems(texts): # in terminal python3 -m nltk.downloader punkt
-	stemmer = nltk.stem.porter.PorterStemmer()
-	return [stemmer.stem(token) for token in texts]
+    stemmer = nltk.stem.porter.PorterStemmer()
+    return [stemmer.stem(token) for token in texts]
 
 def stemTokenizer(text):
     return get_stems(nltk.word_tokenize(text.lower()))
 
+# lemma take only one token for words with different forms,
+# e.g. give, gave, given -> lemma: give
 def get_lemmas(tokens): # in terminal python3 -m nltk.downloader wordnet
     lemmer = nltk.stem.WordNetLemmatizer()
     return [lemmer.lemmatize(token) for token in tokens]
