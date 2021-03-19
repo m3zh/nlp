@@ -10,13 +10,14 @@ def get_model(df, texts):
     # add a new column with the found topic for each subject
     df['topics'] = scores.argmax(axis=1)
     # filter topics according to relevant keywords
-    keywords = ['adolescent','children','gifted']
+    keywords = ['gifted']
     topics = model.filter_topics(tmodel, keywords)
     # filter df by relevant topics
     mask = df['topics'].isin(topics)
     df = df[mask]
     # save df to csv and excel
     df = df.drop('topics', axis=1)
+    # df = df.drop('score', axis=1)
     df.to_csv('topic_results.csv')
     # df.drop('topics', axis=1)
     df.to_excel('topic_results.xlsx')

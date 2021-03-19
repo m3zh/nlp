@@ -11,12 +11,12 @@ def get_model(df, texts):
     # return a score between 0 and 1
     # add scores column to original df
     scores = tf_idf.get_scores(len(df),vectors)
-    df['tfidf_score'] = scores
+    df['score'] = scores
     # set a minimum value of similarity
     # and discard texts that got a score lower than the minimum value
     df = ds.sort_df(df)
     # save the data in csv and xlsl
-    df = df.drop('tfidf_score',axis=1)
+    df = df.drop('score',axis=1)
     df.to_csv("similarity_results.csv")
     df.to_excel("similarity_results.xlsx")
     return (df)

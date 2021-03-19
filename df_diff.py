@@ -11,6 +11,7 @@ def diff_df(df1, df2):
     df1.to_csv('diff_df1.csv')
     df2.to_csv('diff_df2.csv')
     df3.to_csv('diff_df.csv')
+    return df3
 
 # to diff two excels files
 def diff_xlsx(df1, df2):
@@ -26,13 +27,14 @@ def diff_xlsx(df1, df2):
 
 # to diff two csv files
 def diff_csv(df1, df2):
-    df1 = pd.read_csv('rat.csv', sep=',')
+    df1 = pd.read_csv('diff_df1.csv', sep=',')
     df1.drop_duplicates(inplace=True)
-    df2 = pd.read_csv('../Downloads/results.csv', sep=',')
+    df2 = pd.read_csv('diff_df2.csv', sep=',')
     df2.drop_duplicates(inplace=True)
     df3 = df1[~df1.title.isin(df2.title.values)]
     print(df1.shape)
     print(df2.shape)
     print(df3.shape)
     df3.to_csv('diff_csv.csv')
+    return df3
 

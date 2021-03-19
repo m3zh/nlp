@@ -1,8 +1,5 @@
-import numpy as np
-import pyLDAvis.gensim
 import gensim
 import spacy
-import pprint
 import gensim.corpora as corpora
 from gensim.utils import simple_preprocess
 from gensim.models import CoherenceModel
@@ -11,9 +8,20 @@ from gensim.models.ldamodel import LdaModel
 from gensim.models.phrases import Phrases, Phraser
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import Phrases
-from numpy import array
 import warnings
 warnings.filterwarnings('ignore',category=DeprecationWarning)
+
+def filter_topics(model, corpus, df):
+    keyword = 'gifted'
+    filtered = []
+    topic_words = model.show_topics(num_topics=20, num_words=50,formatted=True)
+    for t,s in topic_words:
+        if keyword in s:
+            filtered.append(t)
+    print(filtered)
+    mask = df['topics'].isin(filtered)
+    df = df[mask]
+    return df
 
 def get_topics(model, corpus):
     topics = []
@@ -24,13 +32,14 @@ def get_topics(model, corpus):
             if j == 0:  # => dominant topic
                 t = model.show_topic(topic)
                 topics.append(int(topic))
+            else:
                 break
     return(topics)
 
 def mallet_model(tagged):
     mallet_path = '../Downloads/mallet-2.0.8/bin/mallet' # update this path
     id2word = corpora.Dictionary(tagged)
-    #id2word.save('id2word.dict')
+    id2word.save_as_text('id2word.dict')
     corpus = [id2word.doc2bow(t) for t in tagged]
     mallet_model = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, id2word=id2word, num_topics=20)
     return corpus, mallet_model
@@ -70,5 +79,6 @@ def get_model(df, texts):
     #print(model.show_topics())
     df['topics'] = get_topics(model, corpus)
     df = filter_topics(model, corpus, df)
-    #df.to_csv('topicsgensim.csv')
+    df = df.drop('topics', axis=1)
+    df.to_csv('topicsgensim.csv')
     return (df)

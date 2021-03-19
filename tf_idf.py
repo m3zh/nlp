@@ -18,7 +18,7 @@ import numpy as np
 def text2Vector(texts):
 	print("Vectorizing ...")
 	# in tokenizer, you can use either stemTokenizer or lemmaTokenizer
-	tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer) # , stop_words='english') <- we can omit this parameter, as we remove stopwords upfront
+	tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer) # token_pattern='\w+') <- add this if you get no vocabulary error
 	vectors = tfidf_vectorizer.fit_transform(texts)
 	return (vectors)
 

@@ -15,9 +15,9 @@ def check_df(df):
 # check results and return the final df
 def sort_df(df):
     keywords = ["gifted"]
-    final = df[~(df['tfidf_score'] <= 0.31)]
-    purged = df[~(df['tfidf_score'] >= 0.31)]
+    final = df[~(df['score'] <= 0.31)]
+    purged = df[~(df['score'] >= 0.31)]
     rescued = purged[df['title'].astype(str).str.contains('|'.join(keywords),case=False)]
     final = pd.concat([final,rescued], ignore_index=True)
-    final = final.sort_values(by=['tfidf_score'], ascending=False)
+    final = final.sort_values(by=['score'], ascending=False)
     return final
