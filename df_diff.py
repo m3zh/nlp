@@ -8,6 +8,8 @@ def diff_df(df1, df2):
     print(df1.shape)
     print(df2.shape)
     print(df3.shape)
+    df1.to_csv('diff_df1.csv')
+    df2.to_csv('diff_df2.csv')
     df3.to_csv('diff_df.csv')
 
 # to diff two excels files
