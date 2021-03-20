@@ -5,7 +5,7 @@ import nlp_basics as nlp
 import ds_basics as ds
 
 # read csv, turn it into a df, removes duplicates
-df = pd.read_csv('new.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
+df = pd.read_csv('autism_new.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
 df.drop_duplicates(inplace=True)
 df = ds.check_df(df) # to change after we add abstracts
 # change title+abstract into a unique column of text
@@ -29,8 +29,8 @@ df['tfidf_score'] = scores
 df = ds.sort_df(df)
 # save the data in csv and xlsl
 df.to_csv("results.csv")
-df.drop('tfidf_score',axis=1) # we don't need to give the score to the client in excel
+#df.drop('tfidf_score',axis=1) # we don't need to give the score to the client in excel
 df.to_excel("results.xlsx")
 # to display full-width column in df in terminal
 # pd.set_option('display.max_colwidth', None)
-print(df)
+print(df.shape)
