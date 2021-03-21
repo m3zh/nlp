@@ -4,6 +4,7 @@ import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
 from collections import Counter
+import pickle
 
 # filter results in df by subject
 def check_df(df):
@@ -14,7 +15,10 @@ def check_df(df):
 # sort scores, remove scores belowe a min value
 # check results and return the final df
 def sort_df(df):
-    keywords = ["autis","neurodevelop"]
+    keyword = "autism"
+    syn_dict = dict(pickle.load(open("synonyms.dict", "rb")))
+    keywords = syn_dict[keyword]
+    keywords = ["autis", "neurodev","ASD"]
     final = df[~(df['tfidf_score'] <= 0.31)]
     purged = df[~(df['tfidf_score'] >= 0.31)]
     rescued = purged[df['title'].astype(str).str.contains('|'.join(keywords),case=False) | purged['abstract'].astype(str).str.contains('|'.join(keywords),case=False)]
@@ -26,4 +30,5 @@ def sort_df(df):
     filtered = final[~(final['title'].astype(str).str.contains('|'.join(keywords),case=False,regex=True) | final['abstract'].astype(str).str.contains('|'.join(keywords),case=False,regex=True))]
     filtered.to_csv("filtered.csv")
     filtered.to_excel("filtered.xlsx")
-    return final[final['title'].astype(str).str.contains('|'.join(keywords),case=False,regex=True) | final['abstract'].astype(str).str.contains('|'.join(keywords),case=False,regex=True)]
+    final = final[final['title'].astype(str).str.contains('|'.join(keywords),case=False,regex=True) | final['abstract'].astype(str).str.contains('|'.join(keywords),case=False,regex=True)]
+    return final.sort_values(by=['tfidf_score'], ascending=False)

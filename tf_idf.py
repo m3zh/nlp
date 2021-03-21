@@ -27,7 +27,7 @@ def reweighting(texts, keyword):
     processor = KeywordProcessor()
     processor.add_keywords_from_dict(synonym)
     texts = [processor.replace_keywords(t) for t in texts]
-    texts = [t+' '+keyword if keyword in t else t for t in texts]
+    # texts = [t+' '+keyword if keyword in t else t for t in texts]
     return (texts)
 
 

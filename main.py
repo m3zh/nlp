@@ -27,6 +27,7 @@ df['tfidf_score'] = scores
 # set a minimum value of similarity
 # and discard texts that got a score lower than the minimum value
 df = ds.sort_df(df)
+print(df.shape)
 # save the data in csv and xlsl
 df.to_csv("results.csv")
 #df.drop('tfidf_score',axis=1) # we don't need to give the score to the client in excel
