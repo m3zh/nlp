@@ -17,7 +17,7 @@ def pubmed_df_feeder(keywords):
     Entrez.tool= 'monScript'
 
     # search in database
-    limit= 5 #max tested = 6000
+    limit= 5 #max tested = 5000
     handle= Entrez.esearch(db= 'pubmed', term= keywords, retmax= limit)
     tmp= Entrez.read(handle)
     id_list= tmp['IdList']
@@ -47,10 +47,10 @@ def pubmed_df_feeder(keywords):
                 df.at[count, 'publication date']+= record["MedlineCitation"]["Article"]["ArticleDate"][0]['Day']
             except IndexError:
                 pass
-            try: #AUTHOR
-                df.at[count, "author"]= record["MedlineCitation"]["Article"]["AuthorList"][0]
-            except ValueError:
-                pass
+            # try: #AUTHOR
+            #     df.at[count, "author"]= record["MedlineCitation"]["Article"]["AuthorList"][0]
+            # except KeyError:
+            #     pass
             count= count +1
     # fill database column
     df['from_database']= 'pubmed'
