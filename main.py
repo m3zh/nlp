@@ -17,52 +17,61 @@ search_with_operators = "gifted attachment" #OPERATORS doesnt work with pubmed
 name_client = input('Please enter name of client : ')
 id_results = str("{0}_{1}_{2}".format(search_no_operators, name_client, date.today()))
 ## create client's folder
-os.mkdir("./excels/{0}".format(id_results))
+os.mkdir("./results/{0}".format(id_results))
 ## create file to store effectvive count (PRISMA method)
-prisma_file = open("./excels/{0}/records_numbers.txt".format(id_results),"w+")
+prisma_file = open("./results/{0}/records_numbers.txt".format(id_results),"w+")
 
 
 
 # DataFrame FEEDERS
 ## Feed it with PUBMED
 df_pubmed = search_db_pubmed.pubmed_df_feeder(search_with_operators)
-print("✓ Pubmed, n=", len(df_pubmed))
+print("✓ Pubmed, n =", len(df_pubmed))
+prisma_file.write("Pubmed, n=" + str(len(df_pubmed)) + "\n")
 ## Feed it with CROSSREF
 df_crossref = search_db_crossref.crossref_df_feeder(search_no_operators)
-print("✓ Crossref, n=", len(df_crossref))
+print("✓ Crossref, n =", len(df_crossref))
+prisma_file.write("Crossref, n=" + str(len(df_crossref)) + "\n")
 ## Feed it with ELSEVIER
 df_elsevier = search_db_scopus.scopus_df_feeder(search_no_operators)
-print("✓ Scopus, n=", len(df_elsevier))
+print("✓ Scopus, n =", len(df_elsevier))
+prisma_file.write("Scopus, n=" + str(len(df_elsevier)) + "\n")
 ## Feed it with GOOGLE SCHOLAR
 df_gs = search_db_gs.gs_df_feeder(search_no_operators)
-print("✓ Google Scholar, n=", len(df_gs))
+print("✓ Google Scholar, n =", len(df_gs))
+prisma_file.write("Google Scholar, n=" + str(len(df_gs)) + "\n")
 ## Feed it with FRONTIERSIN
 df_frontiersin = search_db_frontiersin.frontiersin_df_feeder(search_no_operators)
-print("✓ Frontiersin, n=", len(df_frontiersin))
+print("✓ Frontiersin, n =", len(df_frontiersin))
+prisma_file.write("Frontiersin, n=" + str(len(df_frontiersin)) + "\n")
 
 # Merge DataFrame filled by databases
 df_full = pandas_utils.df_full_merging(df_crossref, df_pubmed, df_elsevier, df_gs, df_frontiersin)
 ## Print lenght of index (number of rows)
 print("Number of results before cleaning :", len(df_full))
-prisma_file.write("Records identified trough databases searching :" + str(len(df_full)) + "\n")
+prisma_file.write("Records identified trough databases searching, n=" + str(len(df_full)) + "\n")
+df_full.to_csv("results/{0}/df_full.csv".format(id_results))
 
 # Cleaning the whole set
 # df_clean= df_full.drop_duplicates(subset=['DOI'], keep='last')
 # df_clean.reset_index(drop=True, inplace=True)
-prisma_file.write("Records identified after duplicates removal :" + str(len(df_full)) + "\n") # no cleaning
+df_clean= (df_full.sort_values(by="abstract", na_position='last')
+            .drop_duplicates(subset='DOI', keep='first'))
+print("Records identified after duplicates removal :", len(df_clean))
+prisma_file.write("Records identified after duplicates removal, n=" + str(len(df_clean)) + "\n") # no cleaning
 
 # Export merged DataFrame to files
-df_full.to_csv("./excels/{0}/results.csv".format(id_results))
-print("Results exported to .csv in ./excels/{0}/".format(id_results))
+df_clean.to_csv("./results/{0}/results.csv".format(id_results))
+print("Results exported to .csv in ./results/{0}/".format(id_results))
 ## Close PRISMA file
 prisma_file.close()
 
 # Sorting model
-## took a df.csv and return df.xlsx 
+## took a df.csv and return df.xlsx
 
 
 # Create and export to zip
-final_zip = zipfile.ZipFile("./excels/{0}/{0}.zip".format(id_results), "w", zipfile.ZIP_DEFLATED)
-final_zip.write("./excels/{0}/results.csv".format(id_results))
-final_zip.write("./excels/{0}/records_numbers.txt".format(id_results))
+final_zip = zipfile.ZipFile("./results/{0}/{0}.zip".format(id_results), "w", zipfile.ZIP_DEFLATED)
+final_zip.write("./results/{0}/results.csv".format(id_results))
+final_zip.write("./results/{0}/records_numbers.txt".format(id_results))
 final_zip.close()
