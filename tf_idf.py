@@ -16,12 +16,13 @@ from nltk.corpus import wordnet as wn
 # if a term appears frequently in a few texts but not in many others, its weigth is lowered down
 
 def reweighting(texts, keyword):
-    syn_dict = dict(pickle.load(open("synonyms.dict", "rb")))
+    syn_dict = dict(pickle.load(open("syn.dict", "rb")))
     if keyword not in syn_dict:
         pydict = PyDictionary()
         syn_dict[keyword] = pydict(keyword)
     else:
-        print("Synonym already in dictionary as: "+str(syn_dict[keyword]))
+        print("--------------------------------")
+        print("Synonym already in dictionary as: \n"+str(syn_dict[keyword]))
     synonym = { keyword : syn_dict[keyword] }
     # print(wn.synset('talented.a.01').lemma_names()) --> get input from user
     processor = KeywordProcessor()
@@ -38,7 +39,7 @@ def text2Vector(texts):
     print("Vectorizing ...")
     # in tokenizer, you can use either stemTokenizer or lemmaTokenizer
     tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer) # , stop_words='english') <- we can omit this parameter, as we remove stopwords upfront
-    texts = reweighting(texts, 'autism')
+    texts = reweighting(texts, 'emotionalattachment')
     vectors = tfidf_vectorizer.fit_transform(texts)
     return (vectors)
 

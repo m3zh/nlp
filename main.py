@@ -5,8 +5,10 @@ import nlp_basics as nlp
 import ds_basics as ds
 
 # read csv, turn it into a df, removes duplicates
-df = pd.read_csv('autism_new.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
+df = pd.read_csv('gifted.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
+print(df.shape)
 df.drop_duplicates(inplace=True)
+print(df.shape)
 df = ds.check_df(df) # to change after we add abstracts
 # change title+abstract into a unique column of text
 # to be analysed separetely
@@ -17,6 +19,7 @@ dataset['text'] = df['title'].str.cat(df[['abstract']].astype(str), sep=" ")
 dataset = nlp.normalize(dataset)
 # change dataset['text'] into a simple list of texts
 texts = dataset['text'].tolist()
+df['texts'] = texts
 # texts are feed to the model and turned into vectors of words
 vectors = tf_idf.similarity_matrix(texts)
 # compute similarity scores between text vectors
