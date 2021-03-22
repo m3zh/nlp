@@ -15,7 +15,7 @@ search_no_operators = "gifted+attachment"
 search_with_operators = "gifted attachment" #OPERATORS doesnt work with pubmed
 # name of client
 name_client = input('Please enter name of client : ')
-id_results = str("{0}_{1}_{2}".format(search_no_operators, name_client, date.today()))
+id_results = str("{0}_{1}_{2}".format(name_client, search_no_operators, date.today()))
 ## create client's folder
 os.mkdir("./results/{0}".format(id_results))
 ## create file to store effectvive count (PRISMA method)
@@ -50,6 +50,7 @@ df_full = pandas_utils.df_full_merging(df_crossref, df_pubmed, df_elsevier, df_g
 ## Print lenght of index (number of rows)
 print("Number of results before cleaning :", len(df_full))
 prisma_file.write("Records identified trough databases searching, n=" + str(len(df_full)) + "\n")
+# Export merged DataFrame to files
 df_full.to_csv("results/{0}/df_full.csv".format(id_results))
 
 # Cleaning the whole set
@@ -59,16 +60,20 @@ df_clean= (df_full.sort_values(by="abstract", na_position='last')
             .drop_duplicates(subset='DOI', keep='first'))
 print("Records identified after duplicates removal :", len(df_clean))
 prisma_file.write("Records identified after duplicates removal, n=" + str(len(df_clean)) + "\n") # no cleaning
+df_clean.to_csv("./results/{0}/df_clean.csv".format(id_results))
 
-# Export merged DataFrame to files
-df_clean.to_csv("./results/{0}/results.csv".format(id_results))
-print("Results exported to .csv in ./results/{0}/".format(id_results))
-## Close PRISMA file
-prisma_file.close()
 
 # Sorting model
 ## took a df.csv and return df.xlsx
 
+# Close PRISMA file
+prisma_file.close()
+# Client's df cleaning
+df_client = df_clean
+df_client = df_client.drop(['from_database'], axis=1)
+# df_client = df_client.reset_index() GOAL : delete first column
+print("Results exported to .xlsx in ./results/{0}/".format(id_results))
+df_client.to_csv("./results/{0}/results.csv".format(id_results))
 
 # Create and export to zip
 final_zip = zipfile.ZipFile("./results/{0}/{0}.zip".format(id_results), "w", zipfile.ZIP_DEFLATED)

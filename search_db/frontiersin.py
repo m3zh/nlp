@@ -16,11 +16,11 @@ def frontiersin_df_feeder(keywords):
     df = pandas_utils.df_empty_creator()
     browser = get_browser()
     browser.get("https://www.frontiersin.org/search?query={0}&tab=articles".format(keywords))
-    time.sleep(30) # replace this line by cookies handling
+    time.sleep(10) # replace this line by cookies handling
     html1 = browser.page_source
     page1 = bs(html1, "html.parser")
 
-# Start scraping
+# Start scraping by identifing links
     test2 = page1.find_all("a", href=True)
     list = []
     for t in test2:
@@ -40,7 +40,7 @@ def frontiersin_df_feeder(keywords):
             df.at[count, 'title'] = page2.find('td').findNext("div").get_text()
             df.at[count, 'DOI'] = page2.find('td').findNext("a")['href']
             df.at[count, 'abstract'] = page2.find("td").findNext("div").findNext("p").findNext("span").get_text() # not working for full text
-            df.at[count, 'abstract'] += page2.find("td").findNext("div").findNext("p").findNext("span").findNext("span").get_text()
+            # df.at[count, 'abstract'] += page2.find("td").findNext("div").findNext("p").findNext("span").findNext("span").get_text()
             if df.at[count, 'abstract'] == "##":
                 df.at[count, 'abstract'] = ""
             df.at[count, 'publication date'] = page2.find("tbody").findNext("tr").findNext("tr").findNext("td").findNext("div").get_text()
@@ -51,4 +51,5 @@ def frontiersin_df_feeder(keywords):
     df['from_database']= 'frontiersin'
     df.to_csv("./excels/dfFRONTIERSTEST{}.csv".format(datetime.now().time()))
     # df['publication date']= pd.to_datetime(df['publication date'])
+    browser.close()
     return(df)
