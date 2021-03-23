@@ -25,11 +25,11 @@ def remove_punctuation(original):
 def normalize(original):
     print("Removing stopwords...")
     # you need to download the corpus on your machine -> python3 -m nltk.downloader stopwords
-    # add nan to remove NaN
+    ## add nan to remove NaN
     sw_list = set(stopwords.words('english'))
     sw_list.add('nan')
     # use applymap for df, apply for Series
-    # remove punctuation and stopwords
+    ## remove punctuation and stopwords
     new = original.applymap(lambda col: remove_punctuation(str(col).lower()))
     new = new.applymap(lambda col: ' '.join([w for w in col.split() if w not in sw_list]))
     # standardize AmE and BE
@@ -38,7 +38,7 @@ def normalize(original):
     return (new)
 
 # stem take only one token for words with different forms,
-# e.g. give, gave, given -> stem: give
+## e.g. give, gave, given -> stem: give
 def get_stems(texts): # in terminal python3 -m nltk.downloader punkt
     stemmer = nltk.stem.porter.PorterStemmer()
     return [stemmer.stem(token) for token in texts]
@@ -47,7 +47,7 @@ def stemTokenizer(text):
     return get_stems(nltk.word_tokenize(text.lower()))
 
 # lemma take only one token for words with different forms,
-# e.g. give, gave, given -> lemma: give
+## e.g. give, gave, given -> lemma: give
 def get_lemmas(tokens): # in terminal python3 -m nltk.downloader wordnet
     lemmer = nltk.stem.WordNetLemmatizer()
     return [lemmer.lemmatize(token) for token in tokens]

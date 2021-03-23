@@ -54,10 +54,11 @@ prisma_file.write("Records identified trough databases searching, n=" + str(len(
 # Export merged DataFrame to files
 df_full.to_csv("results/{0}/df_full.csv".format(id_results))
 print(type(df_full))
+print(df_full.shape)
 # Sorting model
 ## took a df.csv and return df.xlsx
 df_filtered = main_filtering.filtering(df_full)
-
+print(df_filtered.shape)
 
 # Cleaning the whole set
 # df_clean= df_full.drop_duplicates(subset=['DOI'], keep='last')

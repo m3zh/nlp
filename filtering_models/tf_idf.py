@@ -8,7 +8,6 @@ from sklearn.preprocessing import MinMaxScaler
 from flashtext import KeywordProcessor
 import pickle
 import numpy as np
-# from PyDictionary import PyDictionary
 from nltk.corpus import wordnet as wn
 from pathlib import Path
 
@@ -22,17 +21,13 @@ def reweighting(texts, keyword):
     with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
         syn_dict = dict(pickle.load(f))
     if keyword not in syn_dict:
-        # pydict = PyDictionary()
-        # syn_dict[keyword] = pydict(keyword)
         print("--------------------------------------------")
-        print('Write your synonyms in a comma-separated list.\nPress Enter when you\'re done\nEx. my,synonyms,list')
-        syns = input().split(',')
+        syns = input("Keywords are not in synonym's dictionary, please fill them below.\nEx :my,wonderful synonyms,list\n").split(',')
         syn_dict[keyword] = syns
     else:
         print("--------------------------------")
         print("For this word, the following synonyms are already in dictionary: \n"+str(syn_dict[keyword]))
     synonym = { keyword : syn_dict[keyword] }
-    # print(wn.synset('talented.a.01').lemma_names()) --> get input from user
     processor = KeywordProcessor()
     processor.add_keywords_from_dict(synonym)
     texts = [processor.replace_keywords(t) for t in texts]
@@ -48,7 +43,8 @@ def reweighting(texts, keyword):
 def text2Vector(texts, keyword):
     print("Vectorizing ...")
     # in tokenizer, you can use either stemTokenizer or lemmaTokenizer
-    tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer) # , stop_words='english') <- we can omit this parameter, as we remove stopwords upfront
+    tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer)
+    # attach more importance to search keywords
     texts = reweighting(texts, keyword)
     vectors = tfidf_vectorizer.fit_transform(texts)
     return (vectors)
