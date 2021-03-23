@@ -8,6 +8,7 @@ import search_db.crossref as search_db_crossref
 import search_db.pyscopus as search_db_scopus
 import search_db.google_scholar.search_utilities as search_db_gs
 import search_db.frontiersin as search_db_frontiersin
+import filtering_models.main as  main_filtering
 
 # words to research without operators
 search_no_operators = "gifted+attachment"
@@ -52,24 +53,26 @@ print("Number of results before cleaning :", len(df_full))
 prisma_file.write("Records identified trough databases searching, n=" + str(len(df_full)) + "\n")
 # Export merged DataFrame to files
 df_full.to_csv("results/{0}/df_full.csv".format(id_results))
+print(type(df_full))
+# Sorting model
+## took a df.csv and return df.xlsx
+df_filtered = main_filtering.filtering(df_full)
+
 
 # Cleaning the whole set
 # df_clean= df_full.drop_duplicates(subset=['DOI'], keep='last')
 # df_clean.reset_index(drop=True, inplace=True)
-df_clean= (df_full.sort_values(by="abstract", na_position='last')
-            .drop_duplicates(subset='DOI', keep='first'))
-print("Records identified after duplicates removal :", len(df_clean))
-prisma_file.write("Records identified after duplicates removal, n=" + str(len(df_clean)) + "\n") # no cleaning
-df_clean.to_csv("./results/{0}/df_clean.csv".format(id_results))
+# df_clean= (df_full.sort_values(by="abstract", na_position='last')
+#             .drop_duplicates(subset='DOI', keep='first'))
+# print("Records identified after duplicates removal :", len(df_clean))
+# prisma_file.write("Records identified after duplicates removal, n=" + str(len(df_clean)) + "\n") # no cleaning
+# df_clean.to_csv("./results/{0}/df_clean.csv".format(id_results))
 
-
-# Sorting model
-## took a df.csv and return df.xlsx
 
 # Close PRISMA file
 prisma_file.close()
 # Client's df cleaning
-df_client = df_clean
+df_client = df_filtered
 df_client = df_client.drop(['from_database'], axis=1)
 # df_client = df_client.reset_index() GOAL : delete first column
 print("Results exported to .xlsx in ./results/{0}/".format(id_results))
