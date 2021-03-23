@@ -10,7 +10,8 @@ import pickle
 import numpy as np
 # from PyDictionary import PyDictionary
 from nltk.corpus import wordnet as wn
-# from config import KEYWORD
+from pathlib import Path
+
 
 # TF-IDF term frequency - inverted document frequency
 # takes into account how many times a term appear and in how many docs
@@ -18,7 +19,8 @@ from nltk.corpus import wordnet as wn
 # if a term appears frequently in a few texts but not in many others, its weigth is lowered down
 
 def reweighting(texts, keyword):
-    syn_dict = dict(pickle.load(open("syn.dict", "rb")))
+    with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
+        syn_dict = dict(pickle.load(f))
     if keyword not in syn_dict:
         # pydict = PyDictionary()
         # syn_dict[keyword] = pydict(keyword)
@@ -28,13 +30,14 @@ def reweighting(texts, keyword):
         syn_dict[keyword] = syns
     else:
         print("--------------------------------")
-        print("Synonym already in dictionary as: \n"+str(syn_dict[keyword]))
+        print("For this word, the following synonyms are already in dictionary: \n"+str(syn_dict[keyword]))
     synonym = { keyword : syn_dict[keyword] }
     # print(wn.synset('talented.a.01').lemma_names()) --> get input from user
     processor = KeywordProcessor()
     processor.add_keywords_from_dict(synonym)
     texts = [processor.replace_keywords(t) for t in texts]
-    pickle.dump(syn_dict, open("syn.dict", "wb"))
+    with Path(__file__).parent.joinpath('syn.dict').open("wb") as f:
+        pickle.dump(syn_dict, f)
     print("----------- dictionary updated -------------")
     return (texts)
 

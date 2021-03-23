@@ -17,7 +17,7 @@ def filtering(df):
     #global KEYWORD = sys.argv[1]
     #df = pd.read_csv('gifted.csv', delimiter=',', usecols=[1,2,3,4,5,6,7,8])
     print(df.shape)
-    df.drop_duplicates(inplace=True)
+    # df.drop_duplicates(inplace=True)
     print(df.shape)
     # df = ds.check_df(df) # to change after we add abstracts
     # change title+abstract into a unique column of text

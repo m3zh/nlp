@@ -6,10 +6,12 @@ from nltk.stem.porter import *
 from flashtext import KeywordProcessor
 import pickle
 import ast
+from pathlib import Path
 
 # british to american english
 def Be2AmE():
-    eng = pickle.load(open("engdict.pickle","rb"))
+    with Path(__file__).parent.joinpath('engdict.pickle').open("rb") as f:
+        eng = pickle.load(f)
     # eng = ast.literal_eval(data)
     processor = KeywordProcessor(eng)
     processor.add_keywords_from_dict(eng)

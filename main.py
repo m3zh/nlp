@@ -17,9 +17,9 @@ search_with_operators = "gifted attachment" #OPERATORS doesnt work with pubmed
 # name of client
 name_client = input('Please enter name of client : ')
 id_results = str("{0}_{1}_{2}".format(name_client, search_no_operators, date.today()))
-## create client's folder
+# create client's folder
 os.mkdir("./results/{0}".format(id_results))
-## create file to store effectvive count (PRISMA method)
+# create file to store effectvive count (PRISMA method)
 prisma_file = open("./results/{0}/records_numbers.txt".format(id_results),"w+")
 
 
@@ -29,15 +29,15 @@ prisma_file = open("./results/{0}/records_numbers.txt".format(id_results),"w+")
 df_pubmed = search_db_pubmed.pubmed_df_feeder(search_with_operators)
 print("✓ Pubmed, n =", len(df_pubmed))
 prisma_file.write("Pubmed, n=" + str(len(df_pubmed)) + "\n")
-## Feed it with CROSSREF
+# Feed it with CROSSREF
 df_crossref = search_db_crossref.crossref_df_feeder(search_no_operators)
 print("✓ Crossref, n =", len(df_crossref))
 prisma_file.write("Crossref, n=" + str(len(df_crossref)) + "\n")
-## Feed it with ELSEVIER
+# Feed it with ELSEVIER
 df_elsevier = search_db_scopus.scopus_df_feeder(search_no_operators)
 print("✓ Scopus, n =", len(df_elsevier))
 prisma_file.write("Scopus, n=" + str(len(df_elsevier)) + "\n")
-## Feed it with GOOGLE SCHOLAR
+# Feed it with GOOGLE SCHOLAR
 df_gs = search_db_gs.gs_df_feeder(search_no_operators)
 print("✓ Google Scholar, n =", len(df_gs))
 prisma_file.write("Google Scholar, n=" + str(len(df_gs)) + "\n")
@@ -47,7 +47,7 @@ print("✓ Frontiersin, n =", len(df_frontiersin))
 prisma_file.write("Frontiersin, n=" + str(len(df_frontiersin)) + "\n")
 
 # Merge DataFrame filled by databases
-df_full = pandas_utils.df_full_merging(df_crossref, df_pubmed, df_elsevier, df_gs, df_frontiersin)
+df_full = pandas_utils.df_full_merging(df_pubmed, df_crossref, df_elsevier, df_gs, df_frontiersin)
 ## Print lenght of index (number of rows)
 print("Number of results before cleaning :", len(df_full))
 prisma_file.write("Records identified trough databases searching, n=" + str(len(df_full)) + "\n")

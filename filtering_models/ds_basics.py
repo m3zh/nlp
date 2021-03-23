@@ -6,8 +6,7 @@ from nltk.stem.porter import *
 from collections import Counter
 import pickle
 import numpy as np
-# from config import KEYWORD
-
+from pathlib import Path
 # filter results in df by subject
 # def check_df(df):
 #     keywords = ['engineering','forensic','natural','computer','technology','computing','environmental','information','oncology','chemistry']
@@ -17,7 +16,8 @@ import numpy as np
 # sort scores, remove scores belowe a min value
 # check results and return the final df
 def sort_df(df, keyword):
-    syn_dict = dict(pickle.load(open("syn.dict", "rb")))
+    with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
+        syn_dict = dict(pickle.load(f))
     keywords = syn_dict.get(keyword)
     final = df[~(df['tfidf_score'] <= 0.31)]
     purged = df[~(df['tfidf_score'] >= 0.31)]
