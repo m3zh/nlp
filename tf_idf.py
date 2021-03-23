@@ -20,8 +20,12 @@ from config import KEYWORD
 def reweighting(texts, keyword):
     syn_dict = dict(pickle.load(open("syn.dict", "rb")))
     if keyword not in syn_dict:
-        pydict = PyDictionary()
-        syn_dict[keyword] = pydict(keyword)
+        # pydict = PyDictionary()
+        # syn_dict[keyword] = pydict(keyword)
+        print("--------------------------------------------")
+        print('Write your synonyms in a comma-separated list.\nPress Enter when you\'re done\nEx. my,synonyms,list')
+        syns = input().split(',')
+        syn_dict[keyword] = syns
     else:
         print("--------------------------------")
         print("Synonym already in dictionary as: \n"+str(syn_dict[keyword]))
@@ -30,7 +34,8 @@ def reweighting(texts, keyword):
     processor = KeywordProcessor()
     processor.add_keywords_from_dict(synonym)
     texts = [processor.replace_keywords(t) for t in texts]
-    # texts = [t+' '+keyword if keyword in t else t for t in texts]
+    pickle.dump(syn_dict, open("syn.dict", "wb"))
+    print("----------- dictionary updated -------------")
     return (texts)
 
 
