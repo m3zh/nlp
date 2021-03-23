@@ -10,6 +10,8 @@ import pickle
 import numpy as np
 from PyDictionary import PyDictionary
 from nltk.corpus import wordnet as wn
+from config import KEYWORD
+
 # TF-IDF term frequency - inverted document frequency
 # takes into account how many times a term appear and in how many docs
 # if a term is not frequent (appears only once per doc) but it's present in all docs, its weigth is high
@@ -39,7 +41,7 @@ def text2Vector(texts):
     print("Vectorizing ...")
     # in tokenizer, you can use either stemTokenizer or lemmaTokenizer
     tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer) # , stop_words='english') <- we can omit this parameter, as we remove stopwords upfront
-    texts = reweighting(texts, 'emotionalattachment')
+    texts = reweighting(texts, KEYWORD)
     vectors = tfidf_vectorizer.fit_transform(texts)
     return (vectors)
 
