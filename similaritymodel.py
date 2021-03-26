@@ -19,6 +19,7 @@ def get_model(df, texts):
     df = df.drop('score',axis=1)
     df.to_csv("similarity_results.csv")
     df.to_excel("similarity_results.xlsx")
+    print(df.shape)
     return (df)
 
 # to display full-width column in df in terminal

@@ -1,2 +1,7 @@
 __pycache__/*
 *.xlsx
+excels/
+filtering*/
+search_db/
+results/
+*.xlsx

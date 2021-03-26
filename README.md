@@ -10,6 +10,7 @@ To use gensim topic modelling download:
 
 https://www.machinelearningplus.com/wp-content/uploads/2018/03/mallet-2.0.8.zip (and update the path in your model to the correct download folder)
 `python -m spacy download en</pre>`
+`sudo pip3 install -U gensim`
 
 ## How To
 

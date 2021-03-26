@@ -5,6 +5,7 @@ from gensim.utils import simple_preprocess
 from gensim.models import CoherenceModel
 from gensim.models.coherencemodel import CoherenceModel
 from gensim.models.ldamodel import LdaModel
+# from gensim.models.wrappers import LdaMallet
 from gensim.models.phrases import Phrases, Phraser
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import Phrases
@@ -12,15 +13,21 @@ import warnings
 warnings.filterwarnings('ignore',category=DeprecationWarning)
 
 def filter_topics(model, corpus, df):
-    keyword = 'gifted'
-    filtered = []
-    topic_words = model.show_topics(num_topics=20, num_words=50,formatted=True)
-    for t,s in topic_words:
-        if keyword in s:
-            filtered.append(t)
-    print(filtered)
-    mask = df['topics'].isin(filtered)
-    df = df[mask]
+    # keyword = 'gifted'
+    # filtered = []
+    # topic_words = model.show_topics(num_topics=20, num_words=50,formatted=True)
+    # for t,s in topic_words:
+    #     if keyword in s:
+    #         filtered.append(t)
+    # print(filtered)
+    # mask = df['topics'].isin(filtered)
+    # df = df[mask]
+    topics = []
+    model = gensim.models.wrappers.ldamallet.malletmodel2ldamodel(model)
+    t = model.get_term_topics("attachment", minimum_probability=0.05)
+    for i,j in t:
+        topics.append(i)
+    df = df[df['topics'].isin(topics)]
     return df
 
 def get_topics(model, corpus):
@@ -79,6 +86,8 @@ def get_model(df, texts):
     #print(model.show_topics())
     df['topics'] = get_topics(model, corpus)
     df = filter_topics(model, corpus, df)
+    #mask = df['topics'].isin(filtered)
     df = df.drop('topics', axis=1)
     df.to_csv('topicsgensim.csv')
+    print(df.shape)
     return (df)
