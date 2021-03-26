@@ -9,7 +9,7 @@ sys.path.append("/...") # needed for import pandas_utils from parent folder
 import pandas_utils
 file_dir = os.path.dirname(__file__)
 sys.path.append(file_dir)
-import clean_utilities as clean
+import clean_gs as clean
 import selenium_utils
 
 def create_gs_df(keywords, browser, limit):
@@ -20,6 +20,9 @@ def create_gs_df(keywords, browser, limit):
         browser.get('https://scholar.google.com/scholar?start={0}&hl=en&as_sdt=0,5&q={1}'.format(i, payload)) # get pages to scrape
         html = bs(browser.page_source, "html.parser") # get html
         page = clean.data(html) # clean html and returns a zipped list ordered by 'title', 'publication date', 'journal', 'DOI', 'author', 'abstract'
+        ## !!! in the line below, the **order** or 'columns'
+        ## has to match the order of the zipped list returned from ./clean_utilities/data function line 60
+        ## but doesn't need to match the order of df.empty_creator (col **names** HAS TO match those of ds.empty_creator)
         data.append(pd.DataFrame(page, columns=['title', 'publication date', 'journal', 'DOI', 'author', 'abstract'])) # append data in df form to data list
         time.sleep(1) # get some rest before scraping again
     for d in data: # fill in the master df with data
@@ -36,5 +39,4 @@ def gs_df_feeder(keywords):
     df['from_database']= 'google_scholar'
     # apply date time format to publication date column
     df['publication date']= pd.to_datetime(df['publication date'],yearfirst='True') #ValueError: month must be in 1..12
-    df.to_csv("newdf.csv")
     return(df)
