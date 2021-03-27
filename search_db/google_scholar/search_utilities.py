@@ -37,7 +37,7 @@ def create_gs_df(data):
 # main function, call above and return full df
 def gs_df_feeder(keywords):
     # change code to retrieve less than 10 results
-    limit = 10 #limit max tested 3000
+    limit = 100 #limit max tested 3000
     browser = selenium_utils.get_browser()
     data = s.selenium_search(keywords, browser, limit=limit)
     df = s.create_gs_df(data)
