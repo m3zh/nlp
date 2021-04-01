@@ -6,17 +6,11 @@ import tf_idf  # term frequency vectorizer
 import numpy as np
 import pandas as pd
 import nlp_basics as nlp
-# import re, nltk
-# import pandas as pd
-# import string
-# from nltk.corpus import stopwords
-# from nltk.stem.porter import *
-# from collections import Counter
 import pickle
 from pathlib import Path
 
 # sort scores, remove scores belowe a min value
-# check results and return the final df
+# check results and return the final df, sorting by ascending sorting score
 def sort_df(df, keyword):
     with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
         syn_dict = dict(pickle.load(f))

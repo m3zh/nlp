@@ -1,8 +1,7 @@
-from pathlib import Path
-from tika import parser
-import senseToVec as s2v
 import spacy
 from sense2vec import Sense2VecComponent
+from tika import parser
+import senseToVec as s2v
 
 ## script to create corpus from pdfs
 # corpus = ""
