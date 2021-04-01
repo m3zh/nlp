@@ -10,7 +10,7 @@ import pickle
 import numpy as np
 from nltk.corpus import wordnet as wn
 from pathlib import Path
-
+from dict as d
 
 # TF-IDF term frequency - inverted document frequency
 # takes into account how many times a term appear and in how many docs
@@ -22,8 +22,12 @@ def reweighting(texts, keyword):
         syn_dict = dict(pickle.load(f))
     if keyword not in syn_dict:
         print("--------------------------------------------")
-        syns = input("Keywords are not in synonym's dictionary, please fill them below.\nEx :my,wonderful synonyms,list\n").split(',')
-        syn_dict[keyword] = syns
+        print("Getting s2v synonyms ...")
+        s2v_syns = d.s2v_synonyms(keyword)
+        print("Synonyms collected:")
+        print(' '.join(s2v_vec))
+        user_syns = input("Wanna add other synonyms? Add them in a comma-separated list, e.g. my,wonderful synonyms,list\n").split(',')
+        syn_dict[keyword] = set(s2v_syns.append(user_syns))
     else:
         print("--------------------------------")
         print("For this word, the following synonyms are already in dictionary: \n"+str(syn_dict[keyword]))

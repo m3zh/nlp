@@ -6,6 +6,9 @@ The first time you run the script, make sure to install the following in your te
 `python3 -m nltk.downloader punkt`  
 `python3 -m nltk.downloader wordnet`
 
+`pip install -U spacy`
+`python -m spacy download en_core_web_sm`
+
 ## How To
 
 Run `python3 main.py`  
