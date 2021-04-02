@@ -47,10 +47,12 @@ def pubmed_df_feeder(keywords):
                 df.at[count, 'publication date']+= record["MedlineCitation"]["Article"]["ArticleDate"][0]['Day']
             except IndexError:
                 pass
-            # try: #AUTHOR
-            #     df.at[count, "author"]= record["MedlineCitation"]["Article"]["AuthorList"][0]
-            # except KeyError:
-            #     pass
+            try: #AUTHOR
+                df.at[count, "author"] = record["MedlineCitation"]["Article"]["AuthorList"][0]['ForeName']
+                df.at[count, "author"] += " "
+                df.at[count, "author"] += record["MedlineCitation"]["Article"]["AuthorList"][0]['LastName']
+            except KeyError:
+                pass
             count= count +1
     # fill database column
     df['from_database']= 'pubmed'

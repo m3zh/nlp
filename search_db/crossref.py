@@ -63,7 +63,9 @@ def crossref_df_feeder(keywords):
                 pass
         if 'author' in res['message']['items'][count]:
             try:
-                df.at[count, 'author']= res['message']['items'][count]['author'][0]
+                df.at[count, 'author'] = res['message']['items'][count]['author'][0]['given']
+                df.at[count, 'author'] += " "
+                df.at[count, 'author'] += res['message']['items'][count]['author'][0]['family']
             except KeyError:
                 pass
         count= count + 1
