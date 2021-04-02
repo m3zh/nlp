@@ -10,7 +10,7 @@ import pickle
 import numpy as np
 from nltk.corpus import wordnet as wn
 from pathlib import Path
-from dict as d
+import dict as d
 
 # TF-IDF term frequency - inverted document frequency
 # takes into account how many times a term appear and in how many docs
@@ -19,27 +19,20 @@ from dict as d
 
 def reweighting(texts, keyword):
     with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
-        syn_dict = dict(pickle.load(f))
-    if keyword not in syn_dict:
-        print("--------------------------------------------")
-        print("Getting s2v synonyms ...")
-        s2v_syns = d.s2v_synonyms(keyword)
-        print("Synonyms collected:")
-        print(' '.join(s2v_vec))
-        user_syns = input("Wanna add other synonyms? Add them in a comma-separated list, e.g. my,wonderful synonyms,list\n").split(',')
-        syn_dict[keyword] = set(s2v_syns.append(user_syns))
-    else:
-        print("--------------------------------")
-        print("For this word, the following synonyms are already in dictionary: \n"+str(syn_dict[keyword]))
+        try:
+            syn_dict = dict(pickle.load(f))
+        except EOFError:
+            syn_dict = dict()
+    syn_dict = d.update_dict(keyword, syn_dict);
     synonym = { keyword : syn_dict[keyword] }
+    print(type(synonym))
+    print(synonym)
     processor = KeywordProcessor()
     processor.add_keywords_from_dict(synonym)
     texts = [processor.replace_keywords(t) for t in texts]
     with Path(__file__).parent.joinpath('syn.dict').open("wb") as f:
         pickle.dump(syn_dict, f)
-    print("----------- dictionary updated -------------")
     return (texts)
-
 
 # take a list of texts,
 # change them into vectors

@@ -19,7 +19,7 @@ def Be2AmE():
 
 def remove_punctuation(original):
     # remove punctuation and numbers
-    new = re.sub('['+string.punctuation+'|\d+?]', '', original)
+    new = re.sub(r'['+string.punctuation+'|\d+?]', '', original)
     return (new)
 
 def normalize(original):

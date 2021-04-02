@@ -5,7 +5,7 @@ import zipfile
 import pandas_utils
 import search_db.pubmed as search_db_pubmed
 import search_db.crossref as search_db_crossref
-import search_db.pyscopus as search_db_scopus
+# import search_db.pyscopus as search_db_scopus
 import search_db.google_scholar.search_utilities as search_db_gs
 import search_db.frontiersin as search_db_frontiersin
 import filtering_models.main as  main_filtering
@@ -27,18 +27,18 @@ prisma_file = open("./results/{0}/records_numbers.txt".format(id_results),"w+")
 
 # DataFrame FEEDERS
 ## Feed it with PUBMED
-df_pubmed = search_db_pubmed.pubmed_df_feeder(search_with_operators)
-print("✓ Pubmed, n =", len(df_pubmed))
-prisma_file.write("Pubmed, n=" + str(len(df_pubmed)) + "\n")
-# Feed it with CROSSREF
-df_crossref = search_db_crossref.crossref_df_feeder(search_no_operators)
-print("✓ Crossref, n =", len(df_crossref))
-prisma_file.write("Crossref, n=" + str(len(df_crossref)) + "\n")
-# Feed it with ELSEVIER
-df_elsevier = search_db_scopus.scopus_df_feeder(search_no_operators)
-print("✓ Scopus, n =", len(df_elsevier))
-prisma_file.write("Scopus, n=" + str(len(df_elsevier)) + "\n")
-# Feed it with GOOGLE SCHOLAR
+# df_pubmed = search_db_pubmed.pubmed_df_feeder(search_with_operators)
+# print("✓ Pubmed, n =", len(df_pubmed))
+# prisma_file.write("Pubmed, n=" + str(len(df_pubmed)) + "\n")
+# # Feed it with CROSSREF
+# df_crossref = search_db_crossref.crossref_df_feeder(search_no_operators)
+# print("✓ Crossref, n =", len(df_crossref))
+# prisma_file.write("Crossref, n=" + str(len(df_crossref)) + "\n")
+# # Feed it with ELSEVIER
+# df_elsevier = search_db_scopus.scopus_df_feeder(search_no_operators)
+# print("✓ Scopus, n =", len(df_elsevier))
+# prisma_file.write("Scopus, n=" + str(len(df_elsevier)) + "\n")
+# # Feed it with GOOGLE SCHOLAR
 df_gs = search_db_gs.gs_df_feeder(search_no_operators)
 print("✓ Google Scholar, n =", len(df_gs))
 prisma_file.write("Google Scholar, n=" + str(len(df_gs)) + "\n")
@@ -48,7 +48,7 @@ print("✓ Frontiersin, n =", len(df_frontiersin))
 prisma_file.write("Frontiersin, n=" + str(len(df_frontiersin)) + "\n")
 
 # Merge DataFrame filled by databases
-df_full = pandas_utils.df_full_merging(df_pubmed, df_crossref, df_elsevier, df_gs, df_frontiersin)
+df_full = pandas_utils.df_full_merging(df_gs, df_frontiersin) # df_pubmed, df_crossref, df_elsevier
 ## Print lenght of index (number of rows)
 print("Number of results before cleaning :", len(df_full))
 prisma_file.write("\n" + "Records identified trough databases searching, n=" + str(len(df_full)) + "\n")
