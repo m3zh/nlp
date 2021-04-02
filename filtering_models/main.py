@@ -20,8 +20,8 @@ def sort_df(df, keyword):
     purged = df[df['tfidf_score'] <= 0.31]
     rescued = purged[df['text'].astype(str).str.contains('|'.join(keywords),case=False)]
     final = pd.concat([final,rescued], ignore_index=True)
-    filtered = final[~(final['text'].astype(str).str.contains('|'.join(keywords),case=False,regex=True))]
-    final = final[final['text'].astype(str).str.contains('|'.join(keywords),case=False,regex=True)]
+    # filtered = final[~(final['text'].astype(str).str.contains('|'.join(keywords),case=False,regex=True))]
+    # final = final[final['text'].astype(str).str.contains('|'.join(keywords),case=False,regex=True)]
     final = final.drop('text', axis=1)
     return final.sort_values(by=['tfidf_score'], ascending=False)
 

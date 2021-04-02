@@ -5,6 +5,8 @@ search_db/__pycache__/
 __pycache__/
 test_cleaning.py
 search_db/apikeys.py
-results/
 filtering_models/__pycache__/
 dictvec/
+results/
+csv/
+
