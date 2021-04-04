@@ -18,7 +18,7 @@ def frontiersin_df_feeder(keywords):
     browser = get_browser()
     browser.get("https://www.frontiersin.org/search?query={0}&tab=articles".format(keywords))
     time.sleep(10) # replace this line by cookies handling
-    for i in range(1): # <-- this is the number of times you want the page to load; increase as you like (1 load = 25 results)
+    for i in range(10): # <-- this is the number of times you want the page to load; increase as you like (1 load = 25 results)
         elem = "#article-results > ul > li:last-child" # gets the last article result of the page so far
         scroll = "document.querySelector(\'" + elem + "\').scrollIntoView();" # scroll the View up to the last article
         browser.execute_script(scroll) # execute the js scroll
