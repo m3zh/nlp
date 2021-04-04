@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+# import org.openqa.selenium.JavascriptExecutor;
 from bs4 import BeautifulSoup as bs
 import requests
 import sys # needed for import pandas_utils from parent folder
@@ -17,22 +18,27 @@ def frontiersin_df_feeder(keywords):
     browser = get_browser()
     browser.get("https://www.frontiersin.org/search?query={0}&tab=articles".format(keywords))
     time.sleep(10) # replace this line by cookies handling
-    html1 = browser.page_source
-    page1 = bs(html1, "html.parser")
+    for i in range(10): # <-- this is the number of times you want the page to load; increase as you like (1 load = 25 results)
+        elem = "#article-results > ul > li:last-child" # gets the last article result of the page so far
+        scroll = "document.querySelector(\'" + elem + "\').scrollIntoView();" # scroll the View up to the last article
+        browser.execute_script(scroll) # execute the js scroll
+        time.sleep(3) # <-- this is the time the page needs to load the new results; encrease the time if needed/no results are retrieved/your connection is slow
 
-# Start scraping by identifing links
-    test2 = page1.find_all("a", href=True)
-    list = []
-    for t in test2:
-        if 'altmetric' in t['href']:
-            list.append(t['href'])
+    # gets all a.href through javascript
+    js_script = '''\
+    var links = []
+    document.querySelectorAll('a').forEach(a => links.push(a.href));
+    return links;
+    '''
+    links = browser.execute_script(js_script)
+    # keeps only a.href with a doi
+    url_list = []
+    for l in links:
+        if 'altmetric' in l:
+            url_list.append(l)
 
-# print each url founded in search page
-    # for url in list:
-        # print(url)
-
-# Metadata to df
-    for count, url in enumerate(list):
+    # Metadata to df
+    for count, url in enumerate(url_list):
         page2 = browser.get(url)
         html2 = browser.page_source # retrieve the page source of the webpage browser is accessing
         page2 = bs(html2, "html.parser")
@@ -48,7 +54,8 @@ def frontiersin_df_feeder(keywords):
             # add reste to journal
         except AttributeError:
             pass
-    df['from_database']= 'frontiersin'
+
+    df['from_database'] = 'frontiersin'
     df.to_csv("./excels/dfFRONTIERSTEST{}.csv".format(datetime.now().time()))
     # df['publication date']= pd.to_datetime(df['publication date'])
     browser.close()

@@ -6,15 +6,15 @@ import pandas_utils
 import search_db.pubmed as search_db_pubmed
 import search_db.crossref as search_db_crossref
 import search_db.pyscopus as search_db_scopus
-import search_db.google_scholar.search_utilities as search_db_gs
+import search_db.google_scholar.gs as search_db_gs
 import search_db.frontiersin as search_db_frontiersin
 import filtering_models.main as  main_filtering
 import pandas as pd
 
 # words to research without operators
-search_no_operators = "gifted+attachment"
+search_no_operators = "neuropsychological+assessment+rasch"
 # words to research with operators
-search_with_operators = "gifted attachment" #OPERATORS doesnt work with pubmed
+search_with_operators = "neuropsychological assessment rasch" #OPERATORS doesnt work with pubmed
 # name of client
 name_client = input('Please enter name of client : ')
 id_results = str("{0}_{1}_{2}".format(name_client, search_no_operators, date.today()))

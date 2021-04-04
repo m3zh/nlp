@@ -14,7 +14,7 @@ def scopus_df_feeder(keywords):
     df = pandas_utils.df_empty_creator() # create empty df
 
 # say Hello to Scopus
-    limit = 200 # max tested = 2000
+    limit = 2000 # max tested = 2000
     scopus = Scopus(scopus_key)
 
     search_df = scopus.search("KEY(keywords)", count=limit, view='STANDARD')
