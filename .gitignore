@@ -6,7 +6,5 @@ __pycache__/
 test_cleaning.py
 search_db/apikeys.py
 filtering_models/__pycache__/
-dictvec/
+filtering_models/vectors_md.tar.gz
 results/
-csv/
-
