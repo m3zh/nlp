@@ -15,3 +15,13 @@ For s2v VECTORS:
 
 `cd filter_models/`
 `tar -xvf vectors_md.tar.gz`
+
+### WARNING
+
+In case you get the following error:
+
+`raise ValueError(f"Can't read file: {location}")`
+`ValueError: Can't read file: ../filtering_models/vectors_md/cfg`
+
+remove the s2v_old folder and re-untar vectors_md.tar.gz
+if you still get this error, check your path to the folder s2v_old
