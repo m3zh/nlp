@@ -14,7 +14,7 @@ def crossref_df_feeder(keywords):
     # # create empty df
     df= pandas_utils.df_empty_creator()
 
-    limit= 50 #limit tested = 1000
+    limit= 1000 #limit tested = 1000
     cr= Crossref()
     Crossref(mailto= "fool@gmail.com")
 
@@ -34,38 +34,41 @@ def crossref_df_feeder(keywords):
     count= 0
     fields= res['message']['items'][count].keys()
     while (count < limit):
-        for t in res['message']['items'][count]['title']:
-            try:
-                df.at[count, 'title']= t
-            except KeyError:
-                pass
-        if 'DOI' in fields:
-            try:
-                df.at[count, 'DOI']= res['message']['items'][count]['DOI']
-            except KeyError:
-                pass
-        if 'abstract' in res['message']['items'][count]:
-            try:
-                df.at[count, 'abstract']= res['message']['items'][count]['abstract']
-            except KeyError:
-                pass
-        if 'published-print' in fields:
-            try:
-                p= res['message']['items'][count]['published-print']['date-parts'][0]
-                str1= ', '.join(str(p) for p in p)
-                df.at[count, 'publication date']= str1
-            except KeyError:
-                pass
-        if 'subject' in res['message']['items'][count]:
-            try:
-                df.at[count, 'subject']= res['message']['items'][count]['subject'][0]
-            except KeyError:
-                pass
-        if 'author' in res['message']['items'][count]:
-            try:
-                df.at[count, 'author']= res['message']['items'][count]['author'][0]
-            except KeyError:
-                pass
+        try:
+            for t in res['message']['items'][count]['title']:
+                try:
+                    df.at[count, 'title']= t
+                except KeyError:
+                    pass
+            if 'DOI' in fields:
+                try:
+                    df.at[count, 'DOI']= res['message']['items'][count]['DOI']
+                except KeyError:
+                    pass
+            if 'abstract' in res['message']['items'][count]:
+                try:
+                    df.at[count, 'abstract']= res['message']['items'][count]['abstract']
+                except KeyError:
+                    pass
+            if 'published-print' in fields:
+                try:
+                    p= res['message']['items'][count]['published-print']['date-parts'][0]
+                    str1= ', '.join(str(p) for p in p)
+                    df.at[count, 'publication date']= str1
+                except KeyError:
+                    pass
+            if 'subject' in res['message']['items'][count]:
+                try:
+                    df.at[count, 'subject']= res['message']['items'][count]['subject'][0]
+                except KeyError:
+                    pass
+            if 'author' in res['message']['items'][count]:
+                try:
+                    df.at[count, 'author']= res['message']['items'][count]['author'][0]
+                except KeyError:
+                    pass
+        except KeyError:
+            pass
         count= count + 1
     # fill database column
     df['from_database']= 'crossref'
