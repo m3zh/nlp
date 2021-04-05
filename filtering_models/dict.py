@@ -1,5 +1,7 @@
 import spacy
-from sense2vec import Sense2VecComponent
+import nltk
+from sense2vec import Sense2VecComponent,Sense2Vec
+from Levenshtein import distance as lev
 from tika import parser
 import re
 from pathlib import Path
@@ -22,11 +24,16 @@ def custom_corpus():
     corpus = list(corpus.replace(r'\n',' ').replace(r'[\d+\\]','').split())
     return (corpus)
 
-def s2v_synonyms(keyword):
-    nlp = spacy.load("en_core_web_sm")
-    s2v = nlp.add_pipe("sense2vec")
+def get_closest_keyword(keyword):
     path = Path(__file__).parent.joinpath('s2v_old')
-    s2v.from_disk(path)
+    s2v = Sense2Vec().from_disk(path)
+    words = list(s2v.keys())
+    words = [re.sub(r'/r/|/|\|\w+$','',w.replace(r'_',' ').lower()) for w in words]
+    distances = ((lev(keyword,word), word) for word in words)
+    closest = min(distances)
+    return (closest[1])
+
+def s2v_synonyms(keyword, s2v, nlp):
     doc = nlp(keyword)
     assert doc[:].text == keyword
     freq = doc[:]._.s2v_freq
@@ -34,31 +41,49 @@ def s2v_synonyms(keyword):
     try:
         most_similar = list(doc[:]._.s2v_most_similar(350))
     except ValueError:
-        print("No synonyms found in sense2vec.\nYou will have have to enter them manually.")
-        return ([])
+        word = get_closest_keyword(keyword)
+        print("\033[1;33;40m No synonyms found in sense2vec.")
+        choice = input("\033[1;33;40m Closest word found is: " + word + ". Find synonyms for this one? Press y for yes, Enter to skip")
+        if not choice:
+            return ([])
+        else:
+            return s2v_synonyms(word,s2v,nlp)
     syns = [s[0][0].lower() for s in most_similar if s[1] > 0.66]
     syns = [re.sub(r'[^a-zA-Z\s:]', '', s) for s in syns]
     return (syns)
 
-def update_dict(keyword, dict):
-    if keyword not in dict:
-        print("--------------------------------------------")
-        print("Getting s2v synonyms ...")
-        dict[keyword] = s2v_synonyms(keyword)
-    if dict[keyword] != []:
-        print("Synonyms currently in dictionary:")
-        print(','.join(dict[keyword]))
-    user_syns = input("Wanna add other synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',').remove('')
-    if user_syns:
-        user_syns = [s.strip() for s in user_syns]
-        dict[keyword].append(w for w in user_syns if w not in dict[keyword])
-    to_del = input("Wanna delete any synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',').remove('')
-    if to_del:
-        to_del = [t.strip() for t in to_del]
-        for d in to_del:
-            try:
-                dict[keyword].remove(d)
-            except ValueError:
-                pass
+def load_s2v():
+    nlp = spacy.load("en_core_web_sm")
+    s2v = nlp.add_pipe("sense2vec")
+    path = Path(__file__).parent.joinpath('filtering_models/s2v_old')
+    s2v.from_disk(path)
+    return (nlp, s2v)
+
+def update_dict(keywords, dict):
+    nlp, s2v = load_s2v()
+    for k in keywords:
+        if k not in dict:
+            print("--------------------------------------------")
+            print("\033[1;33;40m Getting s2v synonyms ...")
+            dict[k] = s2v_synonyms(k,s2v,nlp)
+        if dict[k] != ['']:
+            print("\033[1;33;40m Synonyms currently in dictionary:\033[0m")
+            print(','.join(dict[k]))
+        else:
+            print("\033[1;33;40m No synonyms for " + k + " currently in dictionary.")
+        user_syns = input("\033[1;33;40m Wanna add your own synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',').remove('')
+        if user_syns:
+            user_syns = [s.strip() for s in user_syns]
+            dict[keyword].append(w for w in user_syns if w not in dict[keyword])
+        to_del = input("\033[1;33;40m Wanna delete any synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',').remove('')
+        if to_del:
+            to_del = [t.strip() for t in to_del]
+            for d in to_del:
+                try:
+                    dict[keyword].remove(d)
+                except ValueError:
+                    pass
     print("----------- dictionary updated -------------")
     return (dict)
+
+

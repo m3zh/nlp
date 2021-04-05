@@ -11,7 +11,7 @@ from pathlib import Path
 
 # sort scores, remove scores belowe a min value
 # check results and return the final df, sorting by ascending sorting score
-def sort_df(df, keyword):
+def sort_df(df, keywords):
     with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
         syn_dict = dict(pickle.load(f))
     keywords = syn_dict.get(keyword)
@@ -26,9 +26,7 @@ def sort_df(df, keyword):
     return final.sort_values(by=['tfidf_score'], ascending=False)
 
 # read csv, turn it into a df, removes duplicates
-def filtering(df):
-    print("--------------------------------------------")
-    keyword = str(input('Write your ulimate filtering keyword : '))
+def filtering(df, keywords):
     # df.drop_duplicates(inplace=True) <------------ TO BE DECIDED
     # change title+abstract into a unique column of text
     ## to be analysed separetely
@@ -41,7 +39,7 @@ def filtering(df):
     # change dataset['text'] into a simple list of texts
     texts = dataset['text'].tolist()
     # texts are feed to the model and turned into vectors of words
-    vectors = tf_idf.similarity_matrix(texts, keyword)
+    vectors = tf_idf.similarity_matrix(texts, keywords)
     # compute similarity scores between text vectors
     ## return a score between 0 and 1
     ## add scores column to original df
@@ -49,6 +47,6 @@ def filtering(df):
     df['tfidf_score'] = scores
     # set a minimum value of similarity
     ## and discard texts that got a score lower than the minimum value
-    df = sort_df(df, keyword)
+    df = sort_df(df, keywords)
     df.drop('tfidf_score',axis=1) # we don't need to give the score to the client in excel
     return(df)
