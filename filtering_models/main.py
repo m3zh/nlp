@@ -14,11 +14,15 @@ from pathlib import Path
 def sort_df(df, keywords):
     with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
         syn_dict = dict(pickle.load(f))
-    keywords = syn_dict.get(keyword)
-    keywords.append(keyword)
+    kw = []
+    for k in keywords:
+        w = syn_dict.get(k)
+        if w != []:
+            kw.extend(w)
+            kw.append(k)
     final = df[df['tfidf_score'] >= 0.31]
     purged = df[df['tfidf_score'] <= 0.31]
-    rescued = purged[df['text'].astype(str).str.contains('|'.join(keywords),case=False)]
+    rescued = purged[df['text'].astype(str).str.contains('|'.join(kw),case=False)]
     final = pd.concat([final,rescued], ignore_index=True)
     # filtered = final[~(final['text'].astype(str).str.contains('|'.join(keywords),case=False,regex=True))]
     # final = final[final['text'].astype(str).str.contains('|'.join(keywords),case=False,regex=True)]

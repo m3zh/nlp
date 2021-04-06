@@ -17,19 +17,20 @@ import dict as d
 # if a term is not frequent (appears only once per doc) but it's present in all docs, its weigth is high
 # if a term appears frequently in a few texts but not in many others, its weigth is lowered down
 
-def reweighting(texts, keyword):
+def reweighting(texts, keywords):
     with Path(__file__).parent.joinpath('syn.dict').open("rb") as f:
         try:
             syn_dict = dict(pickle.load(f))
         except EOFError:
             syn_dict = dict()
-    syn_dict = d.update_dict(keyword, syn_dict);
-    synonym = { keyword : syn_dict[keyword] }
-    print(type(synonym))
-    print(synonym)
-    processor = KeywordProcessor()
-    processor.add_keywords_from_dict(synonym)
-    texts = [processor.replace_keywords(t) for t in texts]
+    syn_dict = d.update_dict(keywords, syn_dict);
+    for k in keywords:
+        if syn_dict[k] != []:
+            synonym = { k : syn_dict[k] }
+            print(synonym)
+            processor = KeywordProcessor()
+            processor.add_keywords_from_dict(synonym)
+            texts = [processor.replace_keywords(t) for t in texts]
     with Path(__file__).parent.joinpath('syn.dict').open("wb") as f:
         pickle.dump(syn_dict, f)
     return (texts)
@@ -37,12 +38,12 @@ def reweighting(texts, keyword):
 # take a list of texts,
 # change them into vectors
 # and return a lists of vectors
-def text2Vector(texts, keyword):
+def text2Vector(texts, keywords):
     print("Vectorizing ...")
     # in tokenizer, you can use either stemTokenizer or lemmaTokenizer
     tfidf_vectorizer = TfidfVectorizer(tokenizer=nlp.stemTokenizer)
     # attach more importance to search keywords
-    texts = reweighting(texts, keyword)
+    texts = reweighting(texts, keywords)
     vectors = tfidf_vectorizer.fit_transform(texts)
     return (vectors)
 

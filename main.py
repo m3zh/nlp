@@ -6,16 +6,16 @@ import pandas_utils
 import search_db.pubmed as search_db_pubmed
 import search_db.crossref as search_db_crossref
 import search_db.pyscopus as search_db_scopus
-import search_db.google_scholar.search_utilities as search_db_gs
+import search_db.google_scholar.gs as search_db_gs
 import search_db.frontiersin as search_db_frontiersin
 import filtering_models.main as  main_filtering
 import pandas as pd
 
-keywords = ["rasch","neurpsychological assessment"]
+keywords = ["flower","africa"]
 # words to research without operators
-search_no_operators = '+'.join(keywords)
+search_no_operators = "flower+africa"
 # words to research with operators
-search_with_operators = ' '.join(keywords) #OPERATORS doesnt work with pubmed
+search_with_operators = "flower africa" #OPERATORS doesnt work with pubmed
 # name of client
 name_client = input('Please enter name of client : ')
 id_results = str("{0}_{1}_{2}".format(name_client, search_no_operators, date.today()))
@@ -28,7 +28,7 @@ prisma_file = open("./results/{0}/records_numbers.txt".format(id_results),"w+")
 
 # DataFrame FEEDERS
 ## Feed it with PUBMED
-df_pubmed = search_db_pubmed.pubmed_df_feeder(search_with_operators)
+df_pubmed = search_db_pubmed.pubmed_df_feeder(str(search_with_operators))
 print("✓ Pubmed, n =", len(df_pubmed))
 prisma_file.write("Pubmed, n=" + str(len(df_pubmed)) + "\n")
 # Feed it with CROSSREF
@@ -50,7 +50,7 @@ print("✓ Frontiersin, n =", len(df_frontiersin))
 prisma_file.write("Frontiersin, n=" + str(len(df_frontiersin)) + "\n")
 
 # Merge DataFrame filled by databases
-df_full = pandas_utils.df_full_merging(df_pubmed, df_crossref, df_elsevier, df_gs, df_frontiersin)
+df_full = pandas_utils.df_full_merging(df_pubmed, df_crossref, df_gs, df_frontiersin)
 ## Print lenght of index (number of rows)
 print("Number of results before cleaning :", len(df_full))
 prisma_file.write("\n" + "Records identified trough databases searching, n=" + str(len(df_full)) + "\n")

@@ -5,6 +5,7 @@ from Levenshtein import distance as lev
 from tika import parser
 import re
 from pathlib import Path
+import getch
 
 def pdf_to_txt(pdf):
     with open('../dictvec/'+str(pdf)+'.pdf','rb') as pdf:
@@ -39,23 +40,24 @@ def s2v_synonyms(keyword, s2v, nlp):
     freq = doc[:]._.s2v_freq
     vector = doc[:]._.s2v_vec
     try:
-        most_similar = list(doc[:]._.s2v_most_similar(350))
+        most_similar = list(doc[:]._.s2v_most_similar(30))
     except ValueError:
         word = get_closest_keyword(keyword)
-        print("\033[1;33;40m No synonyms found in sense2vec.")
-        choice = input("\033[1;33;40m Closest word found is: " + word + ". Find synonyms for this one? Press y for yes, Enter to skip")
-        if not choice:
-            return ([])
-        else:
+        print("No synonyms found in sense2vec.")
+        print("Closest word found is: \033[1;31;40m " + word + "\033[0m. Find synonyms for this one? Press y for yes, Enter to skip.")
+        choice = getch.getch()
+        if choice == 'y':
             return s2v_synonyms(word,s2v,nlp)
+        return ([])
     syns = [s[0][0].lower() for s in most_similar if s[1] > 0.66]
     syns = [re.sub(r'[^a-zA-Z\s:]', '', s) for s in syns]
-    return (syns)
+    print(syns)
+    return (list(syns))
 
 def load_s2v():
     nlp = spacy.load("en_core_web_sm")
     s2v = nlp.add_pipe("sense2vec")
-    path = Path(__file__).parent.joinpath('filtering_models/s2v_old')
+    path = Path(__file__).parent.joinpath('s2v_old')
     s2v.from_disk(path)
     return (nlp, s2v)
 
@@ -64,25 +66,31 @@ def update_dict(keywords, dict):
     for k in keywords:
         if k not in dict:
             print("--------------------------------------------")
-            print("\033[1;33;40m Getting s2v synonyms ...")
-            dict[k] = s2v_synonyms(k,s2v,nlp)
-        if dict[k] != ['']:
-            print("\033[1;33;40m Synonyms currently in dictionary:\033[0m")
-            print(','.join(dict[k]))
-        else:
-            print("\033[1;33;40m No synonyms for " + k + " currently in dictionary.")
-        user_syns = input("\033[1;33;40m Wanna add your own synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',').remove('')
-        if user_syns:
-            user_syns = [s.strip() for s in user_syns]
-            dict[keyword].append(w for w in user_syns if w not in dict[keyword])
-        to_del = input("\033[1;33;40m Wanna delete any synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',').remove('')
-        if to_del:
-            to_del = [t.strip() for t in to_del]
-            for d in to_del:
-                try:
-                    dict[keyword].remove(d)
-                except ValueError:
-                    pass
+            print("Getting s2v synonyms for \033[1;33;40m" + k + "\033[0m ...")
+            syns = s2v_synonyms(k,s2v,nlp)
+            if syns != []:
+                print("Synonyms currently in dictionary:")
+                print("\033[1;33;40m>>>\033[0m " + ','.join(syns))
+            else:
+                print("No synonyms for \033[1;33;40m" + k + "\033[0m currently in dictionary.")
+            user_syns = input("Wanna add your own synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',')
+            try:
+                user_syns = [s.strip() for s in user_syns]
+                syns = set(syns.extend(user_syns))
+            except TypeError:
+                pass
+            to_del = input("Wanna delete any synonyms? Write them in a comma-separated list, e.g. my, wonderful synonyms,list\n").split(',')
+            try:
+                to_del = [t.strip() for t in to_del]
+                for d in to_del:
+                    try:
+                        syns.remove(d)
+                    except ValueError:
+                        pass
+            except TypeError:
+                pass
+            print(syns)
+            dict[k] = syns
     print("----------- dictionary updated -------------")
     return (dict)
 
