@@ -12,9 +12,9 @@ import filtering_models.main as  main_filtering
 import pandas as pd
 
 # words to research without operators
-search_no_operators = "neuropsychological+assessment+rasch"
+search_no_operators = "gifted"
 # words to research with operators
-search_with_operators = "neuropsychological assessment rasch" #OPERATORS doesnt work with pubmed
+search_with_operators = "gifted" #OPERATORS doesnt work with pubmed
 # name of client
 name_client = input('Please enter name of client : ')
 id_results = str("{0}_{1}_{2}".format(name_client, search_no_operators, date.today()))

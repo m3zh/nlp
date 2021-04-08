@@ -7,4 +7,6 @@ test_cleaning.py
 search_db/apikeys.py
 filtering_models/__pycache__/
 filtering_models/vectors_md.tar.gz
+filtering_models/._s2v_old
+filtering_models/s2v_old/
 results/
