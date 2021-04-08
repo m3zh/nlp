@@ -57,8 +57,10 @@ def frontiersin_df_feeder(keywords):
             # df.at[count, 'abstract'] += page2.find("td").findNext("div").findNext("p").findNext("span").findNext("span").get_text()
             if df.at[count, 'abstract'] == "##":
                 df.at[count, 'abstract'] = ""
-            df.at[count, 'publication date'] = page2.find("tbody").findNext("tr").findNext("tr").findNext("td").findNext("div").get_text()
-            df.at[count, 'publication date'].split(',') # keep date only year
+            date_and_journal = page2.find("tbody").findNext("tr").findNext("tr").findNext("td").findNext("div").get_text().split(',')
+            df.at[count, 'publication date'] = date_and_journal[1]
+            df.at[count, 'journal'] = date_and_journal[0]
+            # keep date only year
             # add reste to journal
         except AttributeError:
             pass

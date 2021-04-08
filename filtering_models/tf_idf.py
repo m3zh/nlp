@@ -25,8 +25,6 @@ def reweighting(texts, keyword):
             syn_dict = dict()
     syn_dict = d.update_dict(keyword, syn_dict);
     synonym = { keyword : syn_dict[keyword] }
-    print(type(synonym))
-    print(synonym)
     processor = KeywordProcessor()
     processor.add_keywords_from_dict(synonym)
     texts = [processor.replace_keywords(t) for t in texts]
