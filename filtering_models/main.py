@@ -20,6 +20,8 @@ def sort_df(df, keywords):
         if w != []:
             kw.extend(w)
             kw.append(k)
+    # kw = nlp.get_stems(set(syn_dict[keywords[0]]))
+    # kw.append(str(keywords[0]))
     final = df[df['tfidf_score'] >= 0.31]
     purged = df[df['tfidf_score'] <= 0.31]
     rescued = purged[df['text'].astype(str).str.contains('|'.join(kw),case=False)]

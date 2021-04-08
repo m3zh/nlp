@@ -40,7 +40,7 @@ def s2v_synonyms(keyword, s2v, nlp):
     freq = doc[:]._.s2v_freq
     vector = doc[:]._.s2v_vec
     try:
-        most_similar = list(doc[:]._.s2v_most_similar(30))
+        most_similar = list(doc[:]._.s2v_most_similar(15))
     except ValueError:
         word = get_closest_keyword(keyword)
         print("No synonyms found in sense2vec.")

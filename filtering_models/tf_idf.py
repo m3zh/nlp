@@ -26,8 +26,8 @@ def reweighting(texts, keywords):
     syn_dict = d.update_dict(keywords, syn_dict);
     for k in keywords:
         if syn_dict[k] != []:
-            synonym = { k : syn_dict[k] }
-            print(synonym)
+            syns = nlp.get_stems(set(syn_dict[k]))
+            synonym = { k : syns }
             processor = KeywordProcessor()
             processor.add_keywords_from_dict(synonym)
             texts = [processor.replace_keywords(t) for t in texts]
