@@ -11,6 +11,7 @@ from datetime import datetime
 import time
 import pandas as pd
 import numpy
+import re
 
 # FRONTIERSIN FEEDER
 def frontiersin_df_feeder(keywords):
@@ -24,7 +25,7 @@ def frontiersin_df_feeder(keywords):
         scroll = "document.querySelector(\'" + elem + "\').scrollIntoView();" # scroll the View up to the last article
         browser.execute_script(scroll) # execute the js scroll
         # increase time.sleep if you get 'javascript error: Cannot read property 'scrollIntoView' of null' /no results are retrieved/your connection is slow
-        time.sleep(3)  # <-- this is the time the page needs to load the new results;
+        time.sleep(0)  # <-- this is the time the page needs to load the new results;
         # keep scrolling until current element is the same as previous page last element
         if last != elem:
             last = elem
@@ -52,14 +53,14 @@ def frontiersin_df_feeder(keywords):
         page2 = bs(html2, "html.parser")
         try:
             df.at[count, 'title'] = page2.find('td').findNext("div").get_text()
-            df.at[count, 'DOI'] = page2.find('td').findNext("a")['href']
+            df.at[count, 'DOI'] = page2.find('td').findNext("a")['href'].replace('https://doi.org/','')
             df.at[count, 'abstract'] = page2.find("td").findNext("div").findNext("p").findNext("span").get_text() # not working for full text
             # df.at[count, 'abstract'] += page2.find("td").findNext("div").findNext("p").findNext("span").findNext("span").get_text()
             if df.at[count, 'abstract'] == "##":
                 df.at[count, 'abstract'] = ""
             date_and_journal = page2.find("tbody").findNext("tr").findNext("tr").findNext("td").findNext("div").get_text().split(',')
-            df.at[count, 'publication date'] = date_and_journal[1]
-            df.at[count, 'journal'] = date_and_journal[0]
+            df.at[count, 'publication date'] = re.sub(r'[^\d]', '', date_and_journal[1]).strip()
+            df.at[count, 'journal'] = date_and_journal[0].strip()
             # keep date only year
             # add reste to journal
         except AttributeError:
