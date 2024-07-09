@@ -1,10 +1,8 @@
-from datetime import datetime
-from datetime import date
-import os
+import os, sys
 import filtering_models.main as  main_filtering
 import pandas as pd
 
-keywords = ["emotional attachment","gifted"]
+keywords = sys.argv[0].split(",")
 # Merge DataFrame filled by databases
 df_full = pd.read_csv('csv/gifted-attachment.csv')
 ## Print lenght of index (number of rows)
